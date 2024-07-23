@@ -22,6 +22,7 @@ import Bookings from "../pages/dashboard/Bookings";
 import ContactUS from "../components/ContactUS";
 import Terms from "../pages/packageOverview.jsx/Terms";
 import ManageBookings from "../pages/dashboard/admin/ManageBookings";
+import AboutUs from "../components/AboutUs";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/about-us",
+        element: <AboutUs />,
       },
       {
         path: "/menu",
