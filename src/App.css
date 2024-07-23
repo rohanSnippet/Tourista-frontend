@@ -144,3 +144,33 @@ header{
   padding: 16px;
   border-radius: 0 0 8px 8px;
 }
+
+/* search  */
+.search-container {
+  position: relative;
+}
+
+.search-button {
+  transition: opacity 0.3s ease;
+}
+
+.search-input {
+  transition: width 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.search-input.expanded {
+  width: 200px; /* Adjust width as needed */
+  opacity: 1;
+  visibility: visible;
+}
+
+.search-input.collapsed {
+  width: 0;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.suggestions-list {
+  max-height: 200px; /* Adjust as needed */
+  overflow-y: auto;
+}
