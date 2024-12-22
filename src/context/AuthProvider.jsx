@@ -55,7 +55,7 @@ const AuthProvider = ({ children }) => {
 
   //login using email and password
   const login = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password);
+    return signInWithEmailAndPassword(email, password);
   };
 
   //logout
@@ -102,7 +102,7 @@ const AuthProvider = ({ children }) => {
           setUser(currentUser);
           const userInfo = { email: currentUser.email };
           axios.post(`${baseUrl}/jwt`, userInfo).then((response) => {
-            //console.log(response);
+            console.log(response);
             if (response.data.token) {
               localStorage.setItem("access-token", response.data.token);
             } else {

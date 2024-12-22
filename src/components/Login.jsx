@@ -20,12 +20,12 @@ const Login = () => {
 
   const { signUpWithGmail, login, updateUserProfile } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState("");
-  const [showModal, setShowModal] = useState(false);
   //redirecting to home page or specific page
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/";
   const axiosPublic = useAxiosPublic();
+
   const onSubmit = (data) => {
     const email = data.email;
     const password = data.password;
@@ -41,9 +41,9 @@ const Login = () => {
 
           axios.post(`${baseUrl}/users`, userInfo).then((response) => {
             console.log(response);
-            alert(`Welcome ${data.name}`);
+
             navigate(from, { replace: true });
-            if (response) {
+            if (response.ok) {
               Swal.fire({
                 position: "top-end",
                 icon: "success",
@@ -52,7 +52,6 @@ const Login = () => {
                 timer: 1500,
               });
             }
-            setShowModal(false);
           });
         });
         // document.getElementById("my_modal_5").close();
@@ -86,7 +85,6 @@ const Login = () => {
             showConfirmButton: false,
             timer: 1500,
           });
-          setShowModal(false);
         });
       })
       .catch((error) => console.log(error));

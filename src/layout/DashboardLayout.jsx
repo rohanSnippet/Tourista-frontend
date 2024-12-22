@@ -42,8 +42,6 @@ const sharedLinks = (
   </>
 );
 const DashboardLayout = () => {
-  /*  const { loading } = useAuth();
-  const [isAdmin, isAdminLoading] = useAdmin(); */
   const { loading } = useAuth();
   const [isAdmin, isAdminLoading] = useAdmin();
   return (

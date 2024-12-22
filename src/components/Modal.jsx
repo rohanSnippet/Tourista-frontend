@@ -61,32 +61,35 @@ const Modal = () => {
       });
   };
 
-  const handleLogin = () => {
-    signUpWithGmail()
-      .then((result) => {
-        const user = result.user;
-        const userInfo = {
-          name: user.name,
-          email: user.email,
-        };
-        axiosPublic.post("/users", userInfo).then((response) => {
-          console.log(response);
-          alert(`Welcome ${response.name}`);
-          navigate(from, { replace: true });
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Your work has been saved",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          reset();
-        });
-      })
-      .catch((error) => {
-        setErrorMessage("Invalid Credentials");
-        console.log(error);
+  const handleLogin = async () => {
+    try {
+      const result = await signUpWithGmail();
+      const user = result.user;
+      const userInfo = {
+        name: user.name,
+        email: user.email,
+      };
+
+      const response = await axiosPublic.post("/users", userInfo);
+      // console.log(response);
+
+      alert(`Welcome ${response.data.name}`);
+      navigate(from || "/", { replace: true });
+
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500,
       });
+
+      reset();
+    } catch (error) {
+      setErrorMessage("Invalid Credentials");
+      reset();
+      //console.error(error);
+    }
   };
 
   const handleCloseSnackbar = (event, reason) => {
