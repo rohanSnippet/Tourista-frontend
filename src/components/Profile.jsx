@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
+import { CiUser } from "react-icons/ci";
 
 const Profile = ({ user }) => {
   const { logOut } = useContext(AuthContext);
@@ -19,7 +20,7 @@ const Profile = ({ user }) => {
         //handle error
       });
   };
-  console.log(user.photoURL);
+  console.log(user);
   return (
     <div>
       <div className="drawer drawer-end z-50">
@@ -28,16 +29,14 @@ const Profile = ({ user }) => {
           {/* Page content here */}
           <label
             htmlFor="my-drawer-4"
-            className="drawer-button btn btn-ghost btn-circle avatar"
+            className="drawer-button btn btn-ghost btn-circle avatar tooltip tooltip-bottom "
+            data-tip="Profile"
           >
-            <div className="w-10 rounded-full">
-              {user.photoURL ? (
+            <div className="w-10 rounded-full ">
+              {user.photoURL != null ? (
                 <img alt="Tailwind CSS Navbar component" src={user.photoURL} />
               ) : (
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                />
+                <CiUser size={28} className="mt-[8px] ml-[9px]" />
               )}
             </div>
           </label>

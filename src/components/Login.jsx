@@ -7,7 +7,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import axios from "axios";
 import useAxiosPublic from "../hooks/useAxiosPublic";
-import { useState } from "react";
 import Swal from "sweetalert2";
 import { baseUrl } from "../URL";
 
@@ -19,7 +18,6 @@ const Login = () => {
   } = useForm();
 
   const { signUpWithGmail, login, updateUserProfile } = useContext(AuthContext);
-  const [errorMessage, setErrorMessage] = useState("");
   //redirecting to home page or specific page
   const location = useLocation();
   const navigate = useNavigate();
@@ -32,7 +30,6 @@ const Login = () => {
 
     login(email, password)
       .then((result) => {
-        const user = result.user;
         updateUserProfile(data.email, data.photoURL).then(() => {
           const userInfo = {
             name: data.name,
@@ -57,10 +54,7 @@ const Login = () => {
         // document.getElementById("my_modal_5").close();
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        //setErrorMessage(errorMessage);
-        console.log(errorMessage);
+        console.log(error);
       });
     reset();
   };
@@ -69,7 +63,6 @@ const Login = () => {
   const handleRegister = () => {
     signUpWithGmail()
       .then((result) => {
-        const user = result.user;
         const userInfo = {
           name: data.name,
           email: data.email,
@@ -131,12 +124,6 @@ const Login = () => {
             </label>
           </div>
 
-          {/* error text */}
-          {errorMessage ? (
-            <p className="text-red text-xs italic">{errorMessage}</p>
-          ) : (
-            ""
-          )}
           {/* Login */}
           <div className="form-control mt-6">
             <input
@@ -148,12 +135,9 @@ const Login = () => {
 
           <p className="text-center my-2">
             Don't have an account?{" "}
-            <button
-              onClick={() => document.getElementById("my_modal_5").showModal()}
-              className="underline text-red ml-1"
-            >
+            <Link to="/signup" className="underline text-red ml-1">
               Sign Up
-            </button>
+            </Link>
           </p>
           <Link
             to="/"

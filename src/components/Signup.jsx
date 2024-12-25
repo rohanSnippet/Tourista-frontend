@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import Modal from "./Modal";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
-import axios from "axios";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
 const Signup = () => {
@@ -19,6 +18,17 @@ const Signup = () => {
   const { signUpWithGmail, signInWithTwitter, createUser, updateUserProfile } =
     useContext(AuthContext);
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
   //redirecting to home page or specific page
   const location = useLocation();
   const navigate = useNavigate();
@@ -29,40 +39,46 @@ const Signup = () => {
     const email = data.email;
     const password = data.password;
     const name = data.name;
-    console.log(name);
-    createUser(name, email, password)
-      .then((result) => {
-        const user = result.user;
-        console.log(user);
-        updateUserProfile(data.email, data.photoURL, name).then(() => {
-          const userInfo = {
-            name: data.name,
-            email: data.email,
-          };
-          axiosPublic.post("/users", userInfo).then((response) => {
-            console.log(data.name);
-            if (response) {
-              Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "Your work has been saved",
-                showConfirmButton: false,
-                timer: 1500,
-              });
-            }
-            alert(`Welcome ${data.name}`);
-            navigate(from, { replace: true });
-          });
+
+    try {
+      // Create user in authentication system
+      await createUser(name, email, password);
+
+      // Update user profile with provided data
+      await updateUserProfile(data.email, data.photoURL, name);
+
+      // Prepare user information
+      const userInfo = {
+        name: data.name,
+        email: data.email,
+      };
+
+      // Send user info to your backend
+      const response = await axiosPublic.post("/users", userInfo);
+
+      if (response.status === 201) {
+        // Show the SweetAlert success message
+        Toast.fire({
+          icon: "success",
+          title: `Welcome ${response.data.result.name}`,
         });
-        //document.getElementById("my_modal_5").close();
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
+      }
+
+      // Navigate to another page after success
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+      // Optionally, show an error alert or handle it as needed
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: "An error occurred. Please try again.",
+        showConfirmButton: true,
       });
+    }
   };
 
-  //const handleLogin
+  //Sign up with google
   const handleRegister = () => {
     signUpWithGmail()
       .then((result) => {
@@ -112,6 +128,7 @@ const Signup = () => {
         });
     });
   };
+
   return (
     <div className="max-w-md bg-white shadow w-full mx-auto flex items-center justify-center my-20">
       <div className="modal-action mt-0  flex-col justify-center">
@@ -177,12 +194,13 @@ const Signup = () => {
 
           <p className="text-center my-2">
             Have an account?{" "}
-            <button
-              onClick={() => document.getElementById("my_modal_5").showModal()}
+            <Link
+              //onClick={() => document.getElementById("my_modal_5").showModal()}
+              to="/login"
               className="underline text-red ml-1"
             >
               Login
-            </button>
+            </Link>
           </p>
           <Link
             to="/"

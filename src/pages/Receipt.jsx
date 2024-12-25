@@ -34,9 +34,9 @@ const Receipt = () => {
   };
 
   return (
-    <div className="receipt-container">
+    <div className="receipt-container bg-gradient-to-br from-slate-300 via-gray-200 to-slate-50">
       <div className="logo-container mt-20"></div>
-      <Card className="receipt-card p-8">
+      <Card className="receipt-card p-8 text-black">
         <div className="receipt-header flex items-center">
           <IoMdCheckmarkCircleOutline className="checkmark-icon text-green-500 text-4xl" />
           <Typography variant="h4" className="receipt-title ml-4">
@@ -58,14 +58,14 @@ const Receipt = () => {
                 <td className="w-1/3 font-semibold">Booking Date:</td>
                 <td>{new Date().toLocaleString()}</td>
               </tr>
-              <tr>
+              {/*  <tr>
                 <td className="w-1/3 font-semibold">Tour Date:</td>
                 <td>
                   {new Date(
                     paymentInfo.tour_info.start_date
                   ).toLocaleDateString()}
                 </td>
-              </tr>
+              </tr> */}
               <tr>
                 <td className="w-1/3 font-semibold">Total Amount:</td>
                 <td>&#x20B9; {paymentInfo.price}</td>
@@ -86,7 +86,7 @@ const Receipt = () => {
             variant="contained"
             color="primary"
             size="medium"
-            className="action-button"
+            className="action-button bg-green"
             onClick={handleDownloadReceipt}
           >
             Download Receipt <IoCloudDownloadOutline className="ml-2" />

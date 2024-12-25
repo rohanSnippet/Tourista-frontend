@@ -28,18 +28,17 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   //create an account
-  const createUser = (displayName, email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password).then(
-      (userCredential) => {
-        // After creating the user, update the profile with the display name
-        return updateProfile(userCredential.user, {
-          displayName: displayName,
-        }).then(() => {
-          // Return the userCredential
-          return userCredential;
-        });
-      }
+  const createUser = async (displayName, email, password) => {
+    console.log(displayName, " ", email, " ", password);
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
     );
+    await updateProfile(userCredential.user, {
+      displayName: displayName,
+    });
+    return userCredential;
   };
 
   //signUp with gmail
@@ -102,7 +101,6 @@ const AuthProvider = ({ children }) => {
           setUser(currentUser);
           const userInfo = { email: currentUser.email };
           axios.post(`${baseUrl}/jwt`, userInfo).then((response) => {
-            console.log(response);
             if (response.data.token) {
               localStorage.setItem("access-token", response.data.token);
             } else {
@@ -123,6 +121,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const authInfo = {
+    auth,
     user,
     createUser,
     signUpWithGmail,

@@ -18,18 +18,28 @@ const Modal = () => {
   } = useForm();
 
   const { signUpWithGmail, login } = useContext(AuthContext);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/";
   const axiosPublic = useAxiosPublic();
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
   const onSubmit = (data) => {
     const email = data.email;
     const password = data.password;
-
+    console.log(email, "   ", password);
     login(email, password)
       .then((result) => {
         const user = result.user;
@@ -55,48 +65,53 @@ const Modal = () => {
         window.location.reload("/");
       })
       .catch((error) => {
-        setErrorMessage("Invalid Credentials");
-        setOpenSnackbar(true);
         console.log(error);
       });
   };
 
+  //Login with google
+  let userInfo = {
+    name: "Null",
+    email: "Null",
+  };
   const handleLogin = async () => {
     try {
       const result = await signUpWithGmail();
+
+      // Ensure `result.user` contains the expected fields
       const user = result.user;
-      const userInfo = {
-        name: user.name,
-        email: user.email,
+      console.log("User:", JSON.stringify(user, null, 2));
+
+      // Define userInfo after verifying the structure of `user`
+      userInfo = {
+        name: user.displayName || "User", // Fallback if `displayName` is null
+        email: user.email || "User", // Fallback if `email` is null
       };
 
-      const response = await axiosPublic.post("/users", userInfo);
-      // console.log(response);
+      //console.log("UserInfo:", JSON.stringify(userInfo, null, 2));
 
-      alert(`Welcome ${response.data.name}`);
+      // API call to backend
+      const response = await axiosPublic.post("/users", userInfo);
+      console.log("API Response:", response.data);
+
+      alert(`Welcome ${userInfo.name}`);
+
       navigate(from || "/", { replace: true });
 
-      Swal.fire({
-        position: "top-end",
+      Toast.fire({
         icon: "success",
-        title: "Your work has been saved",
-        showConfirmButton: false,
-        timer: 1500,
+        title: "Signed in successfully",
       });
-
-      reset();
     } catch (error) {
-      setErrorMessage("Invalid Credentials");
-      reset();
-      //console.error(error);
-    }
-  };
+      if (error.message == "Request failed with status code 302") {
+        document.getElementById("my_modal_5").close();
 
-  const handleCloseSnackbar = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
+        Toast.fire({
+          icon: "success",
+          title: "Signed in successfully",
+        });
+      }
     }
-    setOpenSnackbar(false);
   };
 
   return (
@@ -139,24 +154,6 @@ const Modal = () => {
                 </Link>
               </label>
             </div>
-
-            {errorMessage && (
-              <Snackbar
-                className=" text-red rounded-full"
-                open={openSnackbar}
-                autoHideDuration={2000}
-                onClose={handleCloseSnackbar}
-              >
-                <MuiAlert
-                  className=" text-red bg-gradient-to-r from-pink-300 to-indigo-400"
-                  onClose={handleCloseSnackbar}
-                  severity="error"
-                  sx={{ width: "100%" }}
-                >
-                  {errorMessage}
-                </MuiAlert>
-              </Snackbar>
-            )}
 
             <div className="form-control mt-6">
               <input
