@@ -89,13 +89,13 @@ const Modal = () => {
       });
   };
 
-  const handleCloseSnackbar = (event, reason) => {
+ /* const handleCloseSnackbar = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setOpenSnackbar(false);
   };
-
+*/
   return (
     <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
       <div className="modal-box">
