@@ -11,6 +11,7 @@ import {
   sendPasswordResetEmail,
   TwitterAuthProvider,
   RecaptchaVerifier,
+  GithubAuthProvider,
 } from "firebase/auth";
 import app from "../firebase/firebase.config";
 import { useEffect } from "react";
@@ -22,6 +23,7 @@ import { baseUrl } from "../URL";
 export const AuthContext = createContext();
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
+const githubProvider = new GithubAuthProvider();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -52,9 +54,12 @@ const AuthProvider = ({ children }) => {
     return signInWithPopup(auth, twitterProvider);
   };
 
+  const signUpWithGithub = () => {
+    return signInWithPopup(auth, githubProvider);
+  };
   //login using email and password
   const login = (email, password) => {
-    return signInWithEmailAndPassword(email, password);
+    return signInWithEmailAndPassword(auth, email, password);
   };
 
   //logout
@@ -123,6 +128,7 @@ const AuthProvider = ({ children }) => {
   const authInfo = {
     auth,
     user,
+    signUpWithGithub,
     createUser,
     signUpWithGmail,
     login,

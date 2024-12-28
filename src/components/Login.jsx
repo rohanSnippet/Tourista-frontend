@@ -24,7 +24,7 @@ const Login = () => {
   const from = location.state?.from?.pathname || "/";
   const axiosPublic = useAxiosPublic();
 
-  const onSubmit = (data) => {
+  /* const onSubmit = (data) => {
     const email = data.email;
     const password = data.password;
 
@@ -57,8 +57,63 @@ const Login = () => {
         console.log(error);
       });
     reset();
-  };
+  }; */
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
 
+  const onSubmit = (data) => {
+    const email = data.email;
+    const password = data.password;
+
+    //console.log(email, password);
+
+    login(email, password)
+      .then((response) => {
+        console.log(response);
+
+        if (response) {
+          navigate("/");
+          Toast.fire({
+            icon: "success",
+            title: `Welcome ${response.user.displayName}`,
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+
+        if (error.toString().substring(37, 57)) {
+          Swal.fire({
+            position: "center",
+            icon: "warning",
+            title: "Invalid Credentials",
+            showConfirmButton: true,
+            customClass: {
+              container: "swal-container",
+            },
+          });
+        } else {
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "An error occurred. Please try again.",
+            showConfirmButton: true,
+            customClass: {
+              container: "swal-container",
+            },
+          });
+        }
+      });
+  };
   //login with google
   const handleRegister = () => {
     signUpWithGmail()

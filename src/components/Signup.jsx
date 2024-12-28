@@ -8,6 +8,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
+
 const Signup = () => {
   const {
     register,
@@ -67,14 +68,23 @@ const Signup = () => {
       // Navigate to another page after success
       navigate("/");
     } catch (error) {
-      console.error(error);
+      console.error(error.toString().substring(37, 57));
       // Optionally, show an error alert or handle it as needed
-      Swal.fire({
-        position: "top",
-        icon: "error",
-        title: "An error occurred. Please try again.",
-        showConfirmButton: true,
-      });
+      if (error.toString().substring(37, 57)) {
+        Swal.fire({
+          position: "center",
+          icon: "warning",
+          title: "User Already Exists.",
+          showConfirmButton: true,
+        });
+      } else {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "An error occurred. Please try again.",
+          showConfirmButton: true,
+        });
+      }
     }
   };
 
@@ -168,20 +178,24 @@ const Signup = () => {
               <span className="label-text">Password</span>
             </label>
             <input
-              {...register("password")}
+              {...register("password", {
+                required: true,
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters long",
+                },
+              })}
               type="password"
               placeholder="password"
               className="input input-bordered"
               required
             />
-            {/* <label className="label mt-1">
-              <a href="#" className="label-text-alt link link-hover">
-                Forgot password?
-              </a>
-            </label> */}
           </div>
 
           {/* error text */}
+          {errors.password && (
+            <p className="text-red-500">{errors.password.message}</p>
+          )}
 
           {/* Login */}
           <div className="form-control mt-6">

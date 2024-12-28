@@ -97,7 +97,7 @@ const Cards = ({ item }) => {
         </figure>
       </Link>
       <div className="card-body" style={{ height: "12rem" }}>
-        <Link to="/package-overview">
+        <Link to="/package-overview" state={{ item: item }}>
           <h2 className="card-title">{item.name}</h2>
         </Link>
         <p>{item.recipe.split(" ").slice(0, 5).join(" ") + "..."}</p>

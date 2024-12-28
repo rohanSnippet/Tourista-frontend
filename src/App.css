@@ -157,3 +157,11 @@ header {
   max-height: 200px; /* Adjust as needed */
   overflow-y: auto;
 }
+
+.swal-container {
+  z-index: 1050 !important; /* Adjust this value as needed */
+}
+
+.modal {
+  z-index: 1049 !important;
+}

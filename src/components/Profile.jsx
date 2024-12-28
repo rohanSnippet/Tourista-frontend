@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CiUser } from "react-icons/ci";
+import Swal from "sweetalert2";
 
 const Profile = ({ user }) => {
   const { logOut } = useContext(AuthContext);
@@ -11,14 +12,36 @@ const Profile = ({ user }) => {
   const from = location.state?.from?.pathname || "/";
 
   const handleLogout = () => {
-    logOut()
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ffcc00",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout",
+      customClass: {
+        container: "swal-container",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logOut();
+        Swal.fire({
+          title: "Done!",
+          text: "Your have been logged out successfully.",
+          icon: "success",
+        });
+        window.location.reload();
+      }
+    });
+    /* logOut()
       .then(() => {
         alert("Logged out Successfully");
         window.location.reload();
       })
       .catch((error) => {
         //handle error
-      });
+      }); */
   };
   console.log(user);
   return (
