@@ -44,9 +44,7 @@ const Bookings = () => {
           icon: "success",
         });
       }
-    });
-    axiosSecure.delete(`/bookings/${item._id}`).then((response) => {
-      console.log(response);
+      axiosSecure.delete(`/bookings/del/${item._id}`);
       refetch();
     });
   };

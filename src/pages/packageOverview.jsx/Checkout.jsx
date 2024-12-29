@@ -55,7 +55,7 @@ const Checkout = () => {
     });
 
     const order = await response.json();
-    //console.log(order);
+    console.log(order);
 
     // variable from razor pay
     var options = {
