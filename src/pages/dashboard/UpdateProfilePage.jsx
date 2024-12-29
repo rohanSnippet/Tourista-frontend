@@ -4,13 +4,13 @@ import { AuthContext } from "../../context/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const UpdateProfilePage = () => {
-  const { updateUserProfile } = useContext(AuthContext);
+  const { updateUserProfile, user } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
+  console.log(user);
   const location = useLocation();
   const navigate = useNavigate();
   const from = location?.from?.state || "/";
@@ -44,7 +44,7 @@ const UpdateProfilePage = () => {
             <input
               {...register("name")}
               type="text"
-              placeholder="your name here"
+              placeholder={user.displayName}
               className="input input-bordered"
               required
             />
@@ -56,7 +56,7 @@ const UpdateProfilePage = () => {
             <input
               {...register("photoURL")}
               type="text"
-              placeholder="photoURL"
+              placeholder={user.photoURL}
               className="input input-bordered"
             />
             {/* To-Do Here uploading image will be later */}
