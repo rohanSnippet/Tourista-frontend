@@ -158,13 +158,37 @@ const Checkout = () => {
   //console.log(location.state);
   return (
     <div className="container mx-auto px-4 py-8 mt-32">
-      <h1 className="text-3xl font-bold mb-6 ml-5">Checkout Page</h1>
-      <div className="flex w-full mx-auto px-4 py-8 mt-7 ml-10 gap-4">
-        {" "}
-        {/* user Details */}
-        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-2">
-          {" "}
-          <h2 className="text-xl font-semibold mb-4">User Details:</h2>
+      <h1 className="text-3xl font-bold mb-6 ml-5">Review Tour Details</h1>
+
+      <div className="flex flex-col lg:flex-row w-full mx-auto px-4 py-8 mt-7 gap-8">
+        {/* Tour Details */}
+        <div className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 w-full lg:w-1/2">
+          <h2 className="text-xl font-semibold mb-4 text-gray-800">
+            Tour Details
+          </h2>
+
+          <div className="flex flex-col items-center">
+            <img
+              className="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl rounded-lg mb-4 md:h-[20%] sm:h-[10%] h-[20%]"
+              src={item.image}
+              alt={item.name}
+            />
+            <span className="font-semibold text-lg text-gray-800">
+              Tour Name: {item.name}
+            </span>
+            <br />
+            <span className="font-semibold text-sm sm:text-base text-gray-800">
+              Days: {item.Days.length}
+            </span>
+          </div>
+        </div>
+
+        {/* User Details */}
+        <div className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-2 w-full lg:w-1/2">
+          <h2 className="text-xl font-semibold mb-4 text-gray-800">
+            User Details:
+          </h2>
+
           <div>
             <input
               type="text"
@@ -172,84 +196,131 @@ const Checkout = () => {
               required
               onChange={handleNameChange}
               pattern="[A-Za-z\s]+"
-              {...register("name")} // Add onChange event handler
-              className={`input-field bg-gray-200 text-gray-800 px-4 py-2 rounded-lg mx-1 mb-1 ${
-                errors?.adults && errors.adults[index]?.name && "border-red-500"
-              }`}
+              {...register("name")}
+              className="input-field bg-gray-200 text-gray-800 px-4 py-2 rounded-lg w-full mb-4"
             />
-
             <input
               type="email"
               defaultValue={user.email}
               required
               {...register("email")}
-              className={`input-field bg-gray-200 text-gray-800 px-4 py-2 rounded-lg mx-1 mb-1 ${
-                errors?.adults && errors.adults[index]?.name && "border-red-500"
-              }`}
+              className="input-field bg-gray-200 text-gray-800 px-4 py-2 rounded-lg w-full mb-4"
             />
-
             <input
               type="tel"
               placeholder="Enter contact"
               required
               defaultValue={contact}
-              onChange={handleContactChange} // Add onChange event handler
+              onChange={handleContactChange}
               {...register("contact")}
-              className={`input-field bg-gray-200 text-gray-800 px-4 py-2 rounded-lg mx-1 mb-1 ${
-                errors?.adults && errors.adults[index]?.name && "border-red-500"
-              }`}
+              className="input-field bg-gray-200 text-gray-800 px-4 py-2 rounded-lg w-full mb-4"
             />
           </div>
-          {/* Travellers details */}
-          <h2 className="text-xl font-semibold mb-4 mt-4">Travellers:</h2>
-          <ul className="mb-4">
-            {adultTravellers.map((traveller, index) => (
-              <li key={`adult-${index}`} className="mb-2">
-                <span className="font-semibold">Traveller Name:</span>{" "}
-                {traveller.name}, <span className="font-semibold">Age:</span>{" "}
-                {traveller.age}, <span className="font-semibold">Gender:</span>{" "}
-                {traveller.gender},{" "}
-                <span className="font-semibold">Price:</span> {item.price}
-                <span className="font-semibold">{/* Nationality: */}</span>{" "}
-                {traveller.nationality}
-              </li>
-            ))}
-          </ul>
-          <ul className="mb-4">
-            {childTravellers.map((traveller, index) => (
-              <li key={`child-${index}`} className="mb-2">
-                <span className="font-semibold">Name:</span> {traveller.name},{" "}
-                <span className="font-semibold">Age:</span> {traveller.age},{" "}
-                <span className="font-semibold">Gender:</span>{" "}
-                {traveller.gender},{" "}
-                <span className="font-semibold">Price:</span> {item.price}
-                <span className="font-semibold">{/* Nationality: */}</span>{" "}
-                {traveller.nationality}
-              </li>
-            ))}
-          </ul>
-          <h2 className="text-xl font-semibold mb-2">Total Price:</h2>
-          <p className="mb-6">{totalPrice}</p>
+
+          {/* Travellers Details */}
+          <h2 className="text-xl font-semibold mb-4 mt-4 text-gray-800">
+            Travellers:
+          </h2>
+
+          {/* Adult Travellers Table */}
+          <div className="overflow-x-auto mb-6">
+            <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
+                    Name
+                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
+                    Age
+                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
+                    Gender
+                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
+                    Price
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {adultTravellers.map((traveller, index) => (
+                  <tr
+                    key={`adult-${index}`}
+                    className="border-t border-gray-200"
+                  >
+                    <td className="px-4 py-2 text-sm text-gray-800">
+                      {traveller.name}
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-800">
+                      {traveller.age}
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-800">
+                      {traveller.gender}
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-800">
+                      ₹ {item.price}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Child Travellers Table */}
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
+                    Name
+                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
+                    Age
+                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
+                    Gender
+                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
+                    Price
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {childTravellers.map((traveller, index) => (
+                  <tr
+                    key={`child-${index}`}
+                    className="border-t border-gray-200"
+                  >
+                    <td className="px-4 py-2 text-sm text-gray-800">
+                      {traveller.name}
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-800">
+                      {traveller.age}
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-800">
+                      {traveller.gender}
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-800">
+                      ₹{item.price}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h2 className="text-xl text-center mt-3 font-semibold mb-2 text-gray-800">
+            Total Price:
+          </h2>
+          <h1 className="text-lg text-center  font-extrabold mb-6 text-gray-800">
+            ₹{totalPrice}
+          </h1>
+
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-blue-500 text-center hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full sm:w-auto"
             onClick={paymentHandler}
           >
             Proceed to Pay
           </button>
-        </div>
-        {/* tour details */}
-        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ">
-          <h2 className="text-xl font-semibold mb-2">Tour Details</h2>
-          <ul className="mb-4">
-            <span>
-              <img className="itemimage" src={item.image} alt="" />
-            </span>
-            <span className="font-semibold">Tour Name : {item.name}</span>
-            <br></br>
-            <span className="font-semibold">
-              Days : {item.Days.length}
-            </span>{" "}
-          </ul>
         </div>
       </div>
     </div>

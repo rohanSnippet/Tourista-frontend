@@ -5,7 +5,7 @@ body {
 }
 
 header {
-  z-index: 10001 !important;
+  z-index: 1000 !important;
 }
 
 .subtitle {
@@ -156,12 +156,4 @@ header {
 .suggestions-list {
   max-height: 200px; /* Adjust as needed */
   overflow-y: auto;
-}
-
-.swal-container {
-  z-index: 1050 !important; /* Adjust this value as needed */
-}
-
-.modal {
-  z-index: 1049 !important;
 }

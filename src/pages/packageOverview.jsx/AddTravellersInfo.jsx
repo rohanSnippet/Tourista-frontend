@@ -61,25 +61,32 @@ const AddTravellerInfo = () => {
             {[...Array(adults)].map((_, index) => (
               <div
                 key={`adult-${index}`}
-                className="flex lg:flex traveller-info mb-10"
+                className="flex flex-col lg:flex-row traveller-info mb-10"
               >
-                <label className="mt-2">Adult {index + 1}</label>
+                {/* Label for Adult */}
+                <label className="mb-2 lg:mt-2 lg:mr-2 text-slate-800">
+                  Adult {index + 1}
+                </label>
+
+                {/* Name Input */}
                 <input
                   type="text"
                   placeholder="Name"
                   required
                   pattern="[A-Za-z\s]+"
                   {...register(`adults[${index}].name`)}
-                  onChange={(e) => handleChange(index, "name", e.target.value)} // Add onChange event handler
-                  className={`input-field bg-gray-200 text-gray-800 px-4 py-2 rounded-lg mx-1 mb-1 ${
+                  onChange={(e) => handleChange(index, "name", e.target.value)}
+                  className={`input-field bg-gray-200 text-gray-800 px-4 py-2 rounded-lg mb-2 lg:mb-0 lg:mr-2 ${
                     errors?.adults &&
                     errors.adults[index]?.name &&
                     "border-red-500"
                   }`}
                 />
                 {errors?.adults && errors.adults[index]?.name && (
-                  <span className="text-red-500 ml-2">Name is required</span>
+                  <span className="text-red-500 lg:ml-2">Name is required</span>
                 )}
+
+                {/* Age Input */}
                 <input
                   type="number"
                   placeholder="Age"
@@ -87,48 +94,58 @@ const AddTravellerInfo = () => {
                   max={80}
                   min={12}
                   {...register(`adults[${index}].age`)}
-                  onChange={(e) => handleChange(index, "age", e.target.value)} // Add onChange event handler
-                  className={`input-field bg-gray-200 text-gray-800 px-4 py-2 w-20 rounded-lg mx-1 mb-1 ${
+                  onChange={(e) => handleChange(index, "age", e.target.value)}
+                  className={`input-field bg-gray-200 text-gray-800 px-4 py-2 w-full lg:w-20 rounded-lg mb-2 lg:mb-0 lg:mr-2 ${
                     errors?.adults &&
                     errors.adults[index]?.age &&
                     "border-red-500"
                   }`}
                 />
                 {errors?.adults && errors.adults[index]?.age && (
-                  <span className="text-red-500 ml-2">
+                  <span className="text-red-500 lg:ml-2">
                     Age must be between 12 and 80
                   </span>
                 )}
-                <div className="ml-3 flex items-center">
-                  <input
-                    type="radio"
-                    id={`male-adult-${index}`}
-                    name={`gender-adult-${index}`}
-                    value="male"
-                    {...register(`adults[${index}].gender`)}
-                    onChange={() => handleChange(index, "gender", "female")} // Add onChange event handler
-                  />
-                  <label
-                    htmlFor={`male-${index}`}
-                    className="text-slate-800 mr-4 cursor-pointer"
-                  >
-                    Male
-                  </label>
 
-                  <input
-                    type="radio"
-                    id={`female-adult-${index}`}
-                    name={`gender-adult-${index}`}
-                    value="female"
-                    {...register(`adults[${index}].gender`)}
-                    onChange={() => handleChange(index, "gender", "female")}
-                  />
-                  <label
-                    htmlFor={`female-${index}`}
-                    className="text-slate-800 cursor-pointer"
-                  >
-                    Female
-                  </label>
+                {/* Gender Radio Buttons */}
+                <div className="flex items-center justify-center space-x-6">
+                  {/* Male Option */}
+                  <div className="flex items-center">
+                    <input
+                      type="radio"
+                      id={`male-adult-${index}`}
+                      name={`gender-adult-${index}`}
+                      value="male"
+                      {...register(`adults[${index}].gender`)}
+                      onChange={() => handleChange(index, "gender", "male")}
+                      className="cursor-pointer"
+                    />
+                    <label
+                      htmlFor={`male-adult-${index}`}
+                      className="ml-2 text-slate-800 cursor-pointer"
+                    >
+                      Male
+                    </label>
+                  </div>
+
+                  {/* Female Option */}
+                  <div className="flex items-center">
+                    <input
+                      type="radio"
+                      id={`female-adult-${index}`}
+                      name={`gender-adult-${index}`}
+                      value="female"
+                      {...register(`adults[${index}].gender`)}
+                      onChange={() => handleChange(index, "gender", "female")}
+                      className="cursor-pointer"
+                    />
+                    <label
+                      htmlFor={`female-adult-${index}`}
+                      className="ml-2 text-slate-800 cursor-pointer"
+                    >
+                      Female
+                    </label>
+                  </div>
                 </div>
               </div>
             ))}
@@ -140,9 +157,10 @@ const AddTravellerInfo = () => {
             {[...Array(children)].map((_, index) => (
               <div
                 key={`child-${index}`}
-                className="flex lg:flex traveller-info mb-6"
+                className="flex flex-wrap items-center traveller-info mb-6 space-x-4"
               >
                 <label className="mt-2">Child {index + 1}</label>
+
                 <input
                   type="text"
                   placeholder="Name"
@@ -151,7 +169,7 @@ const AddTravellerInfo = () => {
                   {...register(`children[${index}].name`)}
                   onChange={(e) =>
                     handleChange(index + adults, "name", e.target.value)
-                  } // Add onChange event handler
+                  }
                   className={`input-field bg-gray-200 text-gray-800 px-4 py-2 mx-1 rounded-lg ${
                     errors?.children &&
                     errors.children[index]?.name &&
@@ -161,6 +179,7 @@ const AddTravellerInfo = () => {
                 {errors?.children && errors.children[index]?.name && (
                   <span className="text-red-500 ml-2">Name is required</span>
                 )}
+
                 <input
                   type="number"
                   placeholder="Age"
@@ -170,7 +189,7 @@ const AddTravellerInfo = () => {
                   {...register(`children[${index}].age`)}
                   onChange={(e) =>
                     handleChange(index + adults, "age", e.target.value)
-                  } // Add onChange event handler
+                  }
                   className={`input-field bg-gray-200 text-gray-800 px-4 w-20 py-2 mx-1 rounded-lg ${
                     errors?.children &&
                     errors.children[index]?.age &&
@@ -182,43 +201,51 @@ const AddTravellerInfo = () => {
                     Age must be between 1 and 11
                   </span>
                 )}
-                <div className="ml-3 flex items-center">
-                  <input
-                    type="radio"
-                    id={`male-children-${index}`}
-                    name={`gender-children-${index}`}
-                    value="male"
-                    {...register(`children[${index}].gender`)}
-                    onChange={() => handleChange(index, "gender", "female")}
-                    className="mr-2"
-                  />
-                  <label
-                    htmlFor={`male-children-${index}`}
-                    className="text-slate-800 mr-4 cursor-pointer"
-                  >
-                    Male
-                  </label>
-                  <input
-                    type="radio"
-                    id={`female-children-${index}`}
-                    name={`gender-children-${index}`}
-                    value="female"
-                    {...register(`children[${index}].gender`)}
-                    onChange={() => handleChange(index, "gender", "female")}
-                    className="mr-2"
-                  />
-                  <label
-                    htmlFor={`female-children-${index}`}
-                    className="text-slate-800 cursor-pointer"
-                  >
-                    Female
-                  </label>
+
+                <div className="flex items-center space-x-6">
+                  {/* Male Option */}
+                  <div className="flex items-center">
+                    <input
+                      type="radio"
+                      id={`male-children-${index}`}
+                      name={`gender-children-${index}`}
+                      value="male"
+                      {...register(`children[${index}].gender`)}
+                      onChange={() => handleChange(index, "gender", "male")}
+                      className="cursor-pointer"
+                    />
+                    <label
+                      htmlFor={`male-children-${index}`}
+                      className="ml-2 text-slate-800 cursor-pointer"
+                    >
+                      Male
+                    </label>
+                  </div>
+
+                  {/* Female Option */}
+                  <div className="flex items-center">
+                    <input
+                      type="radio"
+                      id={`female-children-${index}`}
+                      name={`gender-children-${index}`}
+                      value="female"
+                      {...register(`children[${index}].gender`)}
+                      onChange={() => handleChange(index, "gender", "female")}
+                      className="cursor-pointer"
+                    />
+                    <label
+                      htmlFor={`female-children-${index}`}
+                      className="ml-2 text-slate-800 cursor-pointer"
+                    >
+                      Female
+                    </label>
+                  </div>
                 </div>
               </div>
             ))}
             <button
               type="submit" // Change button type to submit
-              className="ml-80 btn-primary items-center mt-8 py-2 px-4 rounded-lg  text-white hover:shadow-blue-500 hover:shadow-lg hover:bg-gradient-to-r hover:from-blue-400 hover:to-indigo-600 bg-gradient-to-r  from-indigo-500 via-purple-500 to-pink-500"
+              className="btn justify-around  inline-block px-10 py-3 bg-gradient-to-b from-gray-800 via-gray-700 to-gray-600 shadow-gray-500/50 rounded-full text-white text-sm font-bold shadow-lg hover:shadow-xl hover:shadow-gray-500/30 hover:bg-gradient-to-r hover:from-gray-600 hover:via-gray-500 hover:to-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50"
             >
               Review Details
             </button>
