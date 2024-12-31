@@ -7,17 +7,12 @@ import { FaTrashAlt } from "react-icons/fa";
 
 const ManageBookings = () => {
   const axiosSecure = useAxiosSecure();
-  //const token = localStorage.getItem("access-token");
-  //console.log(token);
+
   const { refetch, data: bookings = [] } = useQuery({
     queryKey: ["bookings"],
     queryFn: async () => {
       const response = await axiosSecure.get(`/bookings/all`);
-      /*  const response = await fetch(`http://localhost:6001/bookings`, {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      }); */
+
       console.log(response); // Verify the data structure
       return response.data;
     },
@@ -60,55 +55,54 @@ const ManageBookings = () => {
   return (
     <div>
       <div>
-        <div className="mx-14">
-          <div className="flex items-center justify-between mb-2">
+        <div className="mx-4 md:mx-14">
+          <div className="flex flex-wrap items-center justify-between mb-4 gap-4">
             <h5
-              className="manageorder font-semibold rounded-md pl-3 pt-2 shadow-lg shadow-lime-500/70"
+              className="manageorder font-semibold rounded-md pl-3 pt-2 shadow-lg shadow-lime-500/70 text-center"
               style={{ width: 120, height: 40 }}
             >
               All Bookings
             </h5>
             <h5
-              className="manageorder font-semibold rounded-md pl-3 pt-2 shadow-lg shadow-lime-500/70"
+              className="manageorder font-semibold rounded-md pl-3 pt-2 shadow-lg shadow-lime-500/70 text-center"
               style={{ width: 160, height: 40 }}
             >
               Total Bookings: {bookings.length}
             </h5>
           </div>
-          <div className="overflow-x-auto">
-            <table className="table">
+          <div className="overflow-x-auto w-full">
+            <table className="table w-full">
               {/* head */}
-              <thead className="manageorder rounded-lg ">
-                <tr className="shadow-lg shadow-lime-500/70 font-semibold text-xl ">
-                  <th className="h-14">
+              <thead className="manageorder rounded-lg">
+                <tr className="shadow-lg shadow-lime-500/70 font-semibold text-base md:text-xl">
+                  <th className="h-14 w-10">
                     <label>
                       <MdAirplaneTicket />
                     </label>
                   </th>
-                  <th>User</th>
-                  <th>Transaction ID</th>
-                  <th>Price</th>
-                  <th>Action</th>
+                  <th className="text-sm md:text-base">User</th>
+                  <th className="text-sm md:text-base">Transaction ID</th>
+                  <th className="text-sm md:text-base">Price</th>
+                  <th className="text-sm md:text-base">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {Array.isArray(bookings) &&
                   bookings.map((transaction, index) => (
-                    <tr key={index}>
+                    <tr key={index} className="text-sm md:text-base">
                       <th>
                         <label>{index + 1}</label>
                       </th>
                       <td>
                         <div className="flex items-center gap-3">
                           <div>
-                            <div className="font-bold">{transaction.email}</div>
+                            <div className="font-bold truncate">
+                              {transaction.email}
+                            </div>
                           </div>
                         </div>
                       </td>
-                      <td>
-                        {transaction.transaction_id}
-                        <br />
-                      </td>
+                      <td className="truncate">{transaction.transaction_id}</td>
                       <td>
                         <span className="badge badge-ghost badge-md flex bg-gradient-to-r from-lime-300 to-lime-100">
                           <button className="font-semibold">
@@ -119,16 +113,14 @@ const ManageBookings = () => {
                       <th>
                         <button
                           onClick={() => handleCancelTransaction(transaction)}
-                          className="btn btn-ghost btn-xs hover:bg-cyan-400 "
+                          className="btn btn-ghost btn-xs hover:bg-cyan-400"
                         >
-                          {" "}
-                          <FaTrashAlt className="text-xl text-lime-700  hover:text-white" />{" "}
+                          <FaTrashAlt className="text-xl text-lime-700 hover:text-white" />
                         </button>
                       </th>
                     </tr>
                   ))}
               </tbody>
-              {/* foot */}
             </table>
           </div>
         </div>

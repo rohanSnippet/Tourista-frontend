@@ -24,32 +24,37 @@ const Dashboard = () => {
   const [animatedBookings, setAnimatedBookings] = useState(0);
   const [animatedTours, setAnimatedTours] = useState(0);
 
+  let revPer = stats.revenue * 0.2;
+  let bookingPer = Math.floor(stats.bookings * 0.2);
+  let tourPer = Math.floor(stats.tours * 0.2);
+  let usersPer = Math.floor(stats.users * 0.2);
+
   useEffect(() => {
     // Update the animated values until they reach the actual values
     const revenueInterval = setInterval(() => {
       setAnimatedRevenue((prev) => {
-        const newValue = prev + 900;
+        const newValue = prev + revPer;
         return newValue < stats.revenue ? newValue : stats.revenue;
       });
     }, 1);
 
     const usersInterval = setInterval(() => {
       setAnimatedUsers((prev) => {
-        const newValue = prev + 1;
+        const newValue = prev + usersPer;
         return newValue < stats.users ? newValue : stats.users;
       });
     }, 50);
 
     const bookingsInterval = setInterval(() => {
       setAnimatedBookings((prev) => {
-        const newValue = prev + 1;
+        const newValue = prev + bookingPer;
         return newValue < stats.bookings ? newValue : stats.bookings;
       });
     }, 50);
 
     const toursInterval = setInterval(() => {
       setAnimatedTours((prev) => {
-        const newValue = prev + 1;
+        const newValue = prev + tourPer;
         return newValue < stats.tours ? newValue : stats.tours;
       });
     }, 50);

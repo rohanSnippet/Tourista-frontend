@@ -43,7 +43,7 @@ const Profile = ({ user }) => {
         //handle error
       }); */
   };
-  console.log(user);
+  console.log(user.photoURL);
   return (
     <div>
       <div className="drawer drawer-end z-50">
@@ -55,12 +55,32 @@ const Profile = ({ user }) => {
             className="drawer-button btn btn-ghost btn-circle avatar tooltip tooltip-bottom "
             data-tip="Profile"
           >
-            <div className="w-10 rounded-full ">
-              {user.photoURL != null ? (
-                <img alt="Tailwind CSS Navbar component" src={user.photoURL} />
+            {/*  <div className="avatar w-10 h-10 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+              {user.photoURL || user.providerData[0]?.photoURL ? (
+                <img
+                  alt="User Avatar"
+                  src={user.photoURL || user.providerData[0]?.photoURL}
+                  className="w-full h-full"
+                />
               ) : (
-                <CiUser size={28} className="mt-[8px] ml-[9px]" />
+                <CiUser size={28} className="text-gray-500" />
               )}
+            </div> */}
+            <div className="avatar">
+              <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+                {user.photoURL || user.providerData[0]?.photoURL ? (
+                  <img
+                    src={user.photoURL || user.providerData[0]?.photoURL}
+                    alt="User Avatar"
+                    onError={(e) => {
+                      e.target.src = "/path-to-default-image.png"; // Fallback image URL
+                    }}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <CiUser size={48} className="text-gray-500" />
+                )}
+              </div>
             </div>
           </label>
         </div>

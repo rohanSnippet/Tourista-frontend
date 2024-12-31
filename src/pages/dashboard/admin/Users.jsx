@@ -19,19 +19,66 @@ const Users = () => {
       return response.data;
     },
   });
-
-  //console.log(users);
-  const handleMakeAdmin = (user) => {
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+  // console.log(users);
+  /* const handleMakeAdmin = (user) => {
     console.log(user);
     axiosSecure
       .patch(`/users/admin/${user._id}`)
       .then((response) => {
         alert(`${user.name} is now Admin`);
+
         refetch();
       })
       .catch((error) => {
         console.error("Error making admin:", error);
       });
+  }; */
+
+  const handleMakeAdmin = (user) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: `You are granting your admin access to ${user.name}!`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ffcc00",
+      cancelButtonColor: "#d33",
+      confirmButtonText: `Yes, Make ${user.name} admin`,
+      customClass: {
+        container: "swal-container",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure
+          .patch(`/users/admin/${user._id}`)
+          .then((response) => {
+            if (response) {
+              Swal.fire({
+                title: "Done!",
+                text: `${user.name} is now Admin`,
+                icon: "success",
+              });
+
+              refetch();
+            }
+          })
+          .catch((error) => {
+            console.error("Error making admin:", error);
+          });
+
+        // window.location.reload();
+      }
+    });
   };
 
   //delete user
@@ -112,10 +159,13 @@ const Users = () => {
                       <p className="text-sm">Admin</p>
                     </span>
                   ) : (
-                    <span className="badge badge-ghost badge-md flex">
+                    <button
+                      className="badge badge-ghost badge-md flex"
+                      onClick={() => handleMakeAdmin(user)}
+                    >
                       <FaUsers />
                       <p>User</p>
-                    </span>
+                    </button>
                   )}
                 </td>
                 <td>

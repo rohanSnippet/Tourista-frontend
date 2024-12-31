@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import { MdDashboard } from "react-icons/md";
 import { FaLocationArrow, FaQuestionCircle, FaUsers } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa";
@@ -42,6 +42,7 @@ const sharedLinks = (
   </>
 );
 const DashboardLayout = () => {
+  const navigate = useNavigate();
   const { loading } = useAuth();
   const [isAdmin, isAdminLoading] = useAdmin();
   return (
