@@ -48,7 +48,7 @@ const Users = () => {
   const handleMakeAdmin = (user) => {
     Swal.fire({
       title: "Are you sure?",
-      text: `You are granting your admin access to ${user.name}!`,
+      text: `You are granting your admin access to this user!!`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#ffcc00",
