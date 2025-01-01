@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import Stars from "./Stars";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { GiCoffeeCup } from "react-icons/gi";
@@ -20,14 +20,17 @@ import { useEffect } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import Terms from "./Terms";
 import Rating from "./Rating";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { AuthContext } from "../../context/AuthProvider";
 
 const PackageOverview = (props) => {
   const location = useLocation();
   const item = location.state?.item;
   const navigate = useNavigate();
-
+  const axiosSecure = useAxiosSecure();
   const [isAccordionExpanded, setIsAccordionExpanded] = useState(false);
   const bottomRef = useRef(null);
+  const { user } = useContext(AuthContext);
 
   const [adults, setAdults] = useState(0);
   const [children, setChildren] = useState(0);
@@ -36,6 +39,24 @@ const PackageOverview = (props) => {
   const [priceChildren, setPriceChildren] = useState(0);
   const [rating, setRating] = useState(null); // State for rating
   const [feedback, setFeedback] = useState(""); // State for feedback
+
+  const handleSubmit = async (data) => {
+    const { rating, feedback } = data;
+    const tour_id = item._id;
+
+    try {
+      const response = await axiosSecure.put(`/users/${user.email}/ratings`, {
+        tour_id,
+        stars: rating,
+        feedback,
+      });
+      console.log("Rating submitted successfully:", response.data);
+      alert("Thank you for your feedback!");
+    } catch (error) {
+      console.error("Error submitting rating:", error);
+      alert("Failed to submit your rating. Please try again.");
+    }
+  };
 
   const incrementAdults = () => {
     setAdults(adults + 1);
@@ -212,6 +233,7 @@ const PackageOverview = (props) => {
           Rate this Package
         </h2>{" "}
         <Rating
+          onSubmit={handleSubmit}
           rating={rating}
           feedback={feedback}
           setRating={setRating}
