@@ -39,10 +39,10 @@ const PackageOverview = (props) => {
   const [priceChildren, setPriceChildren] = useState(0);
   const [rating, setRating] = useState(null); // State for rating
   const [feedback, setFeedback] = useState(""); // State for feedback
+  const tour_id = item._id;
 
   const handleSubmit = async (data) => {
     const { rating, feedback } = data;
-    const tour_id = item._id;
 
     try {
       const response = await axiosSecure.put(`/users/${user.email}/ratings`, {
@@ -97,6 +97,19 @@ const PackageOverview = (props) => {
   //useEffect when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
+    /* const getRatings = async () => {
+      try {
+        const response = await axiosSecure.get(
+          `/users/${user.email}/${tour_id}`
+        );
+        console.log("Rating submitted successfully:", response.data);
+      } catch (error) {
+        console.error("Error getting rating:", error);
+        alert("Failed to get your rating. Please try again.");
+      }
+    };
+
+    getRatings(); */
   }, []);
 
   //useEffect
