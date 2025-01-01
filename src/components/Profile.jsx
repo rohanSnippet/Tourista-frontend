@@ -55,32 +55,19 @@ const Profile = ({ user }) => {
             className="drawer-button btn btn-ghost btn-circle avatar tooltip tooltip-bottom "
             data-tip="Profile"
           >
-            {/*  <div className="avatar w-10 h-10 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
-              {user.photoURL || user.providerData[0]?.photoURL ? (
+            <div className="w-12 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+              {user.photoURL ? (
                 <img
+                  src={user.photoURL}
                   alt="User Avatar"
-                  src={user.photoURL || user.providerData[0]?.photoURL}
-                  className="w-full h-full"
+                  onError={(e) => {
+                    e.target.src = "/path-to-default-image.png";
+                  }}
+                  className="w-full h-full object-cover"
                 />
               ) : (
-                <CiUser size={28} className="text-gray-500" />
+                <CiUser size={48} className="text-gray-500" />
               )}
-            </div> */}
-            <div className="avatar">
-              <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
-                {user.photoURL || user.providerData[0]?.photoURL ? (
-                  <img
-                    src={user.photoURL || user.providerData[0]?.photoURL}
-                    alt="User Avatar"
-                    onError={(e) => {
-                      e.target.src = "/path-to-default-image.png"; // Fallback image URL
-                    }}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <CiUser size={48} className="text-gray-500" />
-                )}
-              </div>
             </div>
           </label>
         </div>

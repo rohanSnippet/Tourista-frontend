@@ -17,13 +17,13 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const { signUpWithGmail, login, updateUserProfile } = useContext(AuthContext);
+  const { signUpWithGmail, login } = useContext(AuthContext);
   //redirecting to home page or specific page
   const location = useLocation();
   const navigate = useNavigate();
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.pathname || "/";
   const axiosPublic = useAxiosPublic();
-
+  console.log(location);
   /* const onSubmit = (data) => {
     const email = data.email;
     const password = data.password;
@@ -86,6 +86,9 @@ const Login = () => {
             icon: "success",
             title: `Welcome ${response.user.displayName}`,
           });
+          if (location.state?.prevPath == "/dashboard") {
+            navigate("/dashboard");
+          }
         }
       })
       .catch((error) => {
@@ -146,6 +149,16 @@ const Login = () => {
           className="card-body"
           method="dialog"
         >
+          {location.state?.prevPath === "/dashboard" && (
+            <div className="font-bold text-lg">
+              <h3 className="bg-gradient-to-r from-green via-midGreen to-darkGreen font-semibold text-xl bg-clip-text text-transparent text-center">
+                You do not have admin access !!
+              </h3>
+              <h6 className="text-red font-medium text-sm text-center">
+                Please login with admin account.
+              </h6>
+            </div>
+          )}
           <h3 className="font-bold text-lg"> Please Login</h3>
 
           {/* email */}
