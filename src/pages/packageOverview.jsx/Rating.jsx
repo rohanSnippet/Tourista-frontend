@@ -16,9 +16,9 @@ const Rating = ({ rating, feedback, setRating, setFeedback, onSubmit }) => {
 
   return (
     <div className="mt-5">
-      <form onSubmit={handleSubmit} className="mt-5">
+      <form onSubmit={handleSubmit} className="mt-5  text-center">
         {/* Star Rating System */}
-        <div className="rating rating-lg rating-half">
+        <div className="rating rating-md  rating-half justify-center flex">
           {[1, 2, 3, 4, 5].map((star) => {
             return (
               <div key={star} className="flex items-center">
@@ -48,7 +48,7 @@ const Rating = ({ rating, feedback, setRating, setFeedback, onSubmit }) => {
             );
           })}
           {rating && (
-            <div className="pt-2 text-xl font-bold ml-20 text-green">
+            <div className=" pt-2 text-end text-xl font-bold ml-12 text-green">
               {rating}
             </div>
           )}
@@ -56,7 +56,7 @@ const Rating = ({ rating, feedback, setRating, setFeedback, onSubmit }) => {
 
         {/* Feedback Textarea */}
         <textarea
-          className="mt-3 w-full border p-2"
+          className="mt-3 w-[90%] border p-2 "
           placeholder="Write your feedback here..."
           value={feedback}
           onChange={handleFeedbackChange}
@@ -66,7 +66,7 @@ const Rating = ({ rating, feedback, setRating, setFeedback, onSubmit }) => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="mt-4 px-4 py-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-600"
+          className="mt-4 px-4 py-2 bg-gradient-to-b from-gray-800 via-gray-700 to-gray-600 shadow-gray-500/50 rounded-full text-white text-sm font-bold shadow-lg hover:shadow-xl hover:shadow-gray-500/30 hover:bg-gradient-to-r hover:from-gray-600 hover:via-gray-500 hover:to-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50"
         >
           Submit
         </button>

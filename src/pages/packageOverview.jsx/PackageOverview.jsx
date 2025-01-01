@@ -39,6 +39,8 @@ const PackageOverview = (props) => {
   const [priceChildren, setPriceChildren] = useState(0);
   const [rating, setRating] = useState(null); // State for rating
   const [feedback, setFeedback] = useState(""); // State for feedback
+
+  const [el, setEl] = useState();
   const tour_id = item._id;
 
   const handleSubmit = async (data) => {
@@ -97,19 +99,27 @@ const PackageOverview = (props) => {
   //useEffect when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
-    /* const getRatings = async () => {
+    const getRatings = async () => {
       try {
         const response = await axiosSecure.get(
           `/users/${user.email}/${tour_id}`
         );
-        console.log("Rating submitted successfully:", response.data);
+        if (response) {
+          setRating(response.data.rating.stars.$numberDecimal);
+          setFeedback(response.data.rating.feedback);
+        } else {
+          setRating(null);
+          setFeedback("");
+        }
+        console.log("Rating fetched successfully:", response.data);
       } catch (error) {
-        console.error("Error getting rating:", error);
-        alert("Failed to get your rating. Please try again.");
+        if (error.response.data.message === "Rating not found.") {
+          setRating(null);
+          setFeedback("");
+        }
       }
     };
-
-    getRatings(); */
+    getRatings();
   }, []);
 
   //useEffect
@@ -172,7 +182,7 @@ const PackageOverview = (props) => {
   };
 
   return (
-    <div>
+    <div className="mx-12 space-y-12">
       {" "}
       <div className="mx-auto mt-32 max-w-5xl px-5 py-12">
         {/* ***************upper section  */}
@@ -239,19 +249,6 @@ const PackageOverview = (props) => {
             </div>
           </div>
         </div>
-      </div>
-      {/* ratings */}
-      <div className="mx-auto max-w-5xl px-5 ">
-        <h2 className="font-semibold text-2xl text-black/80 pl-16">
-          Rate this Package
-        </h2>{" "}
-        <Rating
-          onSubmit={handleSubmit}
-          rating={rating}
-          feedback={feedback}
-          setRating={setRating}
-          setFeedback={setFeedback}
-        />
       </div>
       {/* ***************Accordion section */}
       <div
@@ -334,8 +331,42 @@ const PackageOverview = (props) => {
           </div>
         )}
       </div>
+      {/* ratings */}
+      <div className="mx-auto flex max-w-9xl  items-center space-x-4 relative">
+        <div className="w-1/4 rounded-lg bg-gradient-to-br from-slate-100 via-slate-200 to-slate-100 h-[40vh] ">
+          {" "}
+          {rating == null && feedback == "" ? (
+            <h2 className="font-semibold text-3xl text-black/80 text-center  mt-4 ">
+              Rate this Package
+            </h2>
+          ) : (
+            <div className="flex items-center justify-between mr-8">
+              <div className="avatar p-2">
+                <div className="w-20 rounded-xl">
+                  <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                </div>
+              </div>
+              <h2 className="font-semibold text-3xl text-black/80 align-middle justify-items-center">
+                Your Rating
+              </h2>
+            </div>
+          )}
+          <Rating
+            onSubmit={handleSubmit}
+            rating={rating}
+            feedback={feedback}
+            setRating={setRating}
+            setFeedback={setFeedback}
+          />
+        </div>
+        {/* get and paste all reviews */}
+        <div className="w-3/4 font-semibold flex bg-slate-200 items-center  justify-center h-[40vh] rounded-lg">
+          {" "}
+          <p className="text-5xl text-black/40">NO REVIEWS </p>
+        </div>
+      </div>
       {/*********  iternary section*/}
-      <div className="mx-auto max-w-5xl px-5 py-2 mt-5">
+      <div classname="mx-auto max-w-5xl px-5 py-2 mt-5 ">
         <h4 className="text-3xl font-semibold mb-6">Itinerary</h4>
         <div className="space-y-4">
           {item.Days.map((day, index) => (
@@ -431,7 +462,7 @@ const PackageOverview = (props) => {
         </div>
       </div>
       {/* Terms and conditions */}
-      <div className="mx-auto max-w-5xl px-5 py-2 mt-20">
+      <div classname="mx-auto max-w-5xl px-5 py-2 mt-20">
         <h4 className="text-3xl font-semibold mb-6">Terms and Conditions</h4>
         <div className="space-y-4">
           <Terms />
