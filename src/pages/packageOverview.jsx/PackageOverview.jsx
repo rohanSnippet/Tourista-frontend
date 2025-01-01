@@ -19,6 +19,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import Terms from "./Terms";
+import Rating from "./Rating";
 
 const PackageOverview = (props) => {
   const location = useLocation();
@@ -33,6 +34,8 @@ const PackageOverview = (props) => {
   const [showGlow, setShowGlow] = useState(false);
   const [priceAdult, setPriceAdult] = useState(0);
   const [priceChildren, setPriceChildren] = useState(0);
+  const [rating, setRating] = useState(null); // State for rating
+  const [feedback, setFeedback] = useState(""); // State for feedback
 
   const incrementAdults = () => {
     setAdults(adults + 1);
@@ -202,6 +205,18 @@ const PackageOverview = (props) => {
             </div>
           </div>
         </div>
+      </div>
+      {/* ratings */}
+      <div className="mx-auto max-w-5xl px-5 ">
+        <h2 className="font-semibold text-2xl text-black/80 pl-16">
+          Rate this Package
+        </h2>{" "}
+        <Rating
+          rating={rating}
+          feedback={feedback}
+          setRating={setRating}
+          setFeedback={setFeedback}
+        />
       </div>
       {/* ***************Accordion section */}
       <div
