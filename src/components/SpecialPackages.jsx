@@ -84,7 +84,9 @@ const SpecialPackages = () => {
     <div className="section-container my-20  relative">
       <div className="text-left">
         <p className="subtitle">Special Packages</p>
-        <h2 className="title md:w-[520px]">Standout Packages </h2>
+        <h2 className="title md:w-[520px]">
+          Discover Our Popular Tour Packages{" "}
+        </h2>
       </div>
       {/* arrow buttons */}
       <div className="md:absolute right-3 top-8 mb-10 md:mr-24">
