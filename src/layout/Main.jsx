@@ -9,7 +9,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 export const Main = () => {
   const { loading } = useContext(AuthContext);
   return (
-    <div className="bg-primaryBG">
+    <div className="#ffffff">
       {loading ? (
         <LoadingSpinner />
       ) : (
