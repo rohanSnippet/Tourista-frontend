@@ -83,10 +83,8 @@ const SpecialPackages = () => {
   return (
     <div className="section-container my-20  relative">
       <div className="text-left">
-        <p className="subtitle">Special Packages</p>
-        <h2 className="title md:w-[520px]">
-          Discover Our Popular Tour Packages{" "}
-        </h2>
+        <p className="subtitle">Discover Our Popular Tour Packages</p>
+        <h2 className="title md:w-[520px]"> Special Packages</h2>
       </div>
       {/* arrow buttons */}
       <div className="md:absolute right-3 top-8 mb-10 md:mr-24">
