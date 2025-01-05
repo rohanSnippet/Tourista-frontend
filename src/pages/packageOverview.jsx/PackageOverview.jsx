@@ -40,7 +40,6 @@ const PackageOverview = (props) => {
   const [rating, setRating] = useState(null); // State for rating
   const [feedback, setFeedback] = useState(""); // State for feedback
 
-  const [el, setEl] = useState();
   const tour_id = item._id;
 
   const handleSubmit = async (data) => {
@@ -333,34 +332,61 @@ const PackageOverview = (props) => {
       </div>
       {/* ratings */}
       <div className="mx-auto flex max-w-9xl  items-center space-x-4 relative">
-        <div className="w-1/4 rounded-lg bg-gradient-to-br from-slate-100 via-slate-200 to-slate-100 h-[40vh] ">
-          {" "}
-          {rating == null && feedback == "" ? (
-            <h2 className="font-semibold text-3xl text-black/80 text-center  mt-4 ">
-              Rate this Package
-            </h2>
-          ) : (
-            <div className="flex items-center justify-between mr-8">
-              <div className="avatar p-2">
-                <div className="w-20 rounded-xl">
-                  <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                </div>
-              </div>
-              <h2 className="font-semibold text-3xl text-black/80 align-middle justify-items-center">
-                Your Rating
+        {user && (
+          <div
+            className={`w-1/4 rounded-lg bg-gradient-to-br from-slate-100 via-slate-200 to-slate-100 h-[40vh] `}
+          >
+            {" "}
+            {rating == null && feedback == "" ? (
+              <h2 className="font-semibold text-3xl text-black/80 text-center  mt-4 ">
+                Rate this Package
               </h2>
-            </div>
-          )}
-          <Rating
-            onSubmit={handleSubmit}
-            rating={rating}
-            feedback={feedback}
-            setRating={setRating}
-            setFeedback={setFeedback}
-          />
-        </div>
+            ) : (
+              <div className="flex items-center justify-between mr-8">
+                <div className="avatar p-2">
+                  <div className="w-20 rounded-xl">
+                    <img
+                      src={
+                        user.photoURL ||
+                        `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png`
+                      }
+                      alt="You"
+                    />
+                  </div>
+                </div>
+                <h2 className="font-semibold text-3xl text-black/80 align-middle justify-items-center">
+                  Your Rating
+                </h2>
+              </div>
+            )}
+            <Rating
+              onSubmit={handleSubmit}
+              rating={rating}
+              feedback={feedback}
+              setRating={setRating}
+              setFeedback={setFeedback}
+            />
+          </div>
+        )}
         {/* get and paste all reviews */}
-        <div className="w-3/4 font-semibold flex bg-slate-200 items-center  justify-center h-[40vh] rounded-lg">
+        {!user && (
+          <div
+            className={`w-1/4 rounded-lg bg-gradient-to-br from-slate-100 via-slate-200 to-slate-100 h-[40vh] `}
+          >
+            <button
+              onClick={() => navigate("/login")}
+              type="button"
+              className="btn inline-block px-10 py-3 bg-gradient-to-b from-gray-800 via-gray-700 to-gray-600 shadow-gray-500/50 rounded-full text-white text-sm font-bold shadow-lg hover:shadow-xl hover:shadow-gray-500/30 hover:bg-gradient-to-r hover:from-gray-600 hover:via-gray-500 hover:to-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50"
+            >
+              Login to Review
+            </button>
+          </div>
+        )}
+        <div
+          className={`${
+            user ? `w-3/4` : `w-full`
+          } font-semibold flex bg-slate-200 items-center  justify-center h-[40vh] rounded-lg`}
+        >
           {" "}
           <p className="text-5xl text-black/40">NO REVIEWS </p>
         </div>

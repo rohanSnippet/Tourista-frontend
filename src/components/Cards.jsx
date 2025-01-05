@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 import { AuthContext } from "../context/AuthProvider";
@@ -16,7 +16,7 @@ const Cards = ({ item }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleAddToCart = (item) => {
+  const handleAddToCart = () => {
     //console.log("button is clicked", item);
 
     if (user && user?.email) {
@@ -70,14 +70,20 @@ const Cards = ({ item }) => {
       });
     }
   };
-  const handleHeartClick = () => {
-    // setIsHeartFillted(!isHeartFillted);
-  };
+
+  useEffect(() => {
+    if (cart && cart.length > 0) {
+      const itemInCart = cart.some(
+        (cartItem) => cartItem.menuItemId === item._id
+      );
+      setIsHeartFillted(itemInCart); // Update the heart icon state
+    }
+  }, [cart, item._id]);
 
   return (
     <div
       style={{ width: "18rem", height: "28rem" }}
-      className="relative bg-base-100 shadow-xl"
+      className="relative bg-base-100 shadow-xl flex flex-col"
     >
       <div
         className={`rating gap-1 absolute right-2 top-2 p-4 heartStar bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 ${
@@ -96,12 +102,17 @@ const Cards = ({ item }) => {
           />
         </figure>
       </Link>
-      <div className="card-body" style={{ height: "12rem" }}>
+      <div
+        className="card-body flex flex-col justify-between p-4"
+        style={{ height: "12rem" }}
+      >
         <Link to="/package-overview" state={{ item: item }}>
-          <h2 className="card-title">{item.name}</h2>
+          <h2 className="card-title text-lg font-bold">{item.name}</h2>
         </Link>
-        <p>{item.recipe.split(" ").slice(0, 5).join(" ") + "..."}</p>
-        <div className="card-actions justify-end item-center">
+        <p className="text-sm text-gray-600">
+          {item.recipe.split(" ").slice(0, 5).join(" ") + "..."}
+        </p>
+        <div className="card-actions flex items-center justify-between mt-auto">
           <h5 className="font-semibold">
             <span className="text-sm text-red">&#x20B9;</span>
             {item.price}
