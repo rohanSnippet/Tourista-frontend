@@ -8,10 +8,8 @@ import { baseUrl } from "../URL";
 
 const Cards = ({ item }) => {
   const { name, image, price, recipe, _id, stars, reveiws } = item;
-
   const [isHeartFillted, setIsHeartFillted] = useState(false);
   const { user } = useContext(AuthContext);
-  // console.log(user);
   const [cart, refetch] = UseCart();
   const navigate = useNavigate();
   const location = useLocation();

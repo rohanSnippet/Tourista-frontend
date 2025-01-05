@@ -102,15 +102,31 @@ const SpecialPackages = () => {
         </button>
       </div>
       {/* slider */}
-      <Slider
-        ref={slider}
-        {...settings}
-        className="overflow-hidden mt-10 space-x-5"
-      >
-        {recipes.map((item, i) => (
-          <Cards className="md:justify-around" key={i} item={item} />
-        ))}
-      </Slider>
+      {recipes && recipes.length > 0 ? (
+        <Slider
+          ref={slider}
+          {...settings}
+          className="overflow-hidden mt-10 space-x-5"
+        >
+          {recipes.map((item, i) => (
+            <Cards className="md:justify-around" key={i} item={item} />
+          ))}
+        </Slider>
+      ) : (
+        <div className="flex flex-wrap gap-4">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div className="flex w-72 flex-col gap-4" key={index}>
+              <div className="skeleton h-64 w-full"></div>
+              <div className="skeleton h-4 w-28"></div>
+              <div className="skeleton h-4 w-[90%] mb-6"></div>
+              <div className="flex flex-row items-center justify-between">
+                <div className="skeleton h-4 w-24 text-start"></div>
+                <div className="skeleton h-11 w-24 text-end"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

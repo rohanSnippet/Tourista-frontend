@@ -1,6 +1,6 @@
 import React, { useContext, useRef } from "react";
 import Stars from "./Stars";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { GiCoffeeCup } from "react-icons/gi";
 import { FaUtensils } from "react-icons/fa";
 import { FaPizzaSlice } from "react-icons/fa";
@@ -24,7 +24,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { AuthContext } from "../../context/AuthProvider";
 import Swal from "sweetalert2";
 
-const PackageOverview = (props) => {
+const PackageOverview = () => {
   const location = useLocation();
   const item = location.state?.item;
   const navigate = useNavigate();

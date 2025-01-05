@@ -9,53 +9,13 @@ import useAxiosPublic from "../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
 
 const Login = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit } = useForm();
 
   const { signUpWithGmail, login } = useContext(AuthContext);
-  //redirecting to home page or specific page
   const location = useLocation();
   const navigate = useNavigate();
   const from = location?.pathname || "/";
   const axiosPublic = useAxiosPublic();
-
-  /* const onSubmit = (data) => {
-    const email = data.email;
-    const password = data.password;
-
-    login(email, password)
-      .then((result) => {
-        updateUserProfile(data.email, data.photoURL).then(() => {
-          const userInfo = {
-            name: data.name,
-            email: data.email,
-          };
-
-          axios.post(`${baseUrl}/users`, userInfo).then((response) => {
-            console.log(response);
-
-            navigate(from, { replace: true });
-            if (response.ok) {
-              Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "Your work has been saved",
-                showConfirmButton: false,
-                timer: 1500,
-              });
-            }
-          });
-        });
-        // document.getElementById("my_modal_5").close();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    reset();
-  }; */
   const Toast = Swal.mixin({
     toast: true,
     position: "top",
@@ -71,9 +31,6 @@ const Login = () => {
   const onSubmit = (data) => {
     const email = data.email;
     const password = data.password;
-
-    //console.log(email, password);
-
     login(email, password)
       .then((response) => {
         console.log(response);
