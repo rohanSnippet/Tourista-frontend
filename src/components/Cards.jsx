@@ -46,7 +46,7 @@ const Cards = ({ item }) => {
             Swal.fire({
               position: "top-center",
               icon: "success",
-              title: "Added to Favorites",
+              title: "Added to wishlist",
               showConfirmButton: false,
               timer: 1500,
             });
@@ -57,7 +57,7 @@ const Cards = ({ item }) => {
     } else {
       Swal.fire({
         title: "Please Login?",
-        text: "Without an account can't be able to add products",
+        text: "Without an account, you cant add packages to wishlist",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",

@@ -5,10 +5,8 @@ import { SiGithub } from "react-icons/si";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
-import axios from "axios";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
-import { baseUrl } from "../URL";
 
 const Login = () => {
   const {
@@ -21,9 +19,9 @@ const Login = () => {
   //redirecting to home page or specific page
   const location = useLocation();
   const navigate = useNavigate();
-  const from = location.state?.pathname || "/";
+  const from = location?.pathname || "/";
   const axiosPublic = useAxiosPublic();
-  console.log(location);
+
   /* const onSubmit = (data) => {
     const email = data.email;
     const password = data.password;
@@ -81,7 +79,7 @@ const Login = () => {
         console.log(response);
 
         if (response) {
-          navigate("/");
+          navigate(from);
           Toast.fire({
             icon: "success",
             title: `Welcome ${response.user.displayName}`,
@@ -121,24 +119,37 @@ const Login = () => {
   const handleRegister = () => {
     signUpWithGmail()
       .then((result) => {
+        console.log(result);
         const userInfo = {
-          name: data.name,
-          email: data.email,
+          name: result?.user?.displayName,
+          email: result.user.email,
         };
         axiosPublic.post("/users", userInfo).then((response) => {
           console.log(response);
-          alert(`Welcome ${data.name}`);
+
           navigate(from, { replace: true });
           Swal.fire({
             position: "top-end",
             icon: "success",
-            title: "Your work has been saved",
+            title: `Welcome ${userInfo.name}`,
             showConfirmButton: false,
             timer: 1500,
           });
         });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        if (error.response.data.message == "User already exists") {
+          navigate(from, { replace: true });
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: `Welcome ${userInfo.name}`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        console.log(error);
+      });
   };
 
   return (
@@ -196,7 +207,7 @@ const Login = () => {
           <div className="form-control mt-6">
             <input
               type="submit"
-              value="Signup"
+              value="Login"
               className="btn bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white"
             />
           </div>

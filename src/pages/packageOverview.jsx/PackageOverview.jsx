@@ -22,6 +22,7 @@ import Terms from "./Terms";
 import Rating from "./Rating";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { AuthContext } from "../../context/AuthProvider";
+import Swal from "sweetalert2";
 
 const PackageOverview = (props) => {
   const location = useLocation();
@@ -103,6 +104,7 @@ const PackageOverview = (props) => {
         const response = await axiosSecure.get(
           `/users/${user.email}/${tour_id}`
         );
+        console.log(response);
         if (response) {
           setRating(response.data.rating.stars.$numberDecimal);
           setFeedback(response.data.rating.feedback);
@@ -112,13 +114,16 @@ const PackageOverview = (props) => {
         }
         console.log("Rating fetched successfully:", response.data);
       } catch (error) {
+        console.log(error);
         if (error.response.data.message === "Rating not found.") {
           setRating(null);
           setFeedback("");
         }
       }
     };
-    getRatings();
+    if (user?.email != undefined || user?.email != null) {
+      getRatings();
+    }
   }, []);
 
   //useEffect
@@ -135,7 +140,11 @@ const PackageOverview = (props) => {
   //confirm travellers
   const handleConfirmTravellers = () => {
     if (!children && !adults) {
-      alert("Add Traveller First!!");
+      Swal.fire({
+        position: "center",
+        icon: "warning",
+        title: `Add atleast 1 traveller`,
+      });
     } else {
       navigate("/add-travellers", {
         state: {
@@ -181,9 +190,9 @@ const PackageOverview = (props) => {
   };
 
   return (
-    <div className="mx-12 space-y-12">
+    <div className="mx-4 md:space-y-12 lg:space-y-5">
       {" "}
-      <div className="mx-auto mt-32 max-w-5xl px-5 py-12">
+      <div className="mx-auto mt-32 max-w-7xl px-5 py-12">
         {/* ***************upper section  */}
         <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-start">
           {/* Image Section */}
@@ -274,6 +283,7 @@ const PackageOverview = (props) => {
                 <div className="text-xl font-semibold">Adults</div>
                 <div className="flex items-center">
                   <button
+                    aria-label="decrease travellers"
                     onClick={decrementAdults}
                     className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg mr-2 hover:text-white hover:font-semibold hover:bg-gradient-to-r hover:from-blue-300 hover:to-indigo-600"
                   >
@@ -286,6 +296,7 @@ const PackageOverview = (props) => {
                     className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg w-16 text-center"
                   />
                   <button
+                    aria-label="decrease travellers"
                     onClick={incrementAdults}
                     className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg ml-2 hover:text-white hover:font-semibold hover:bg-gradient-to-r hover:from-blue-300 hover:to-indigo-600"
                   >
@@ -331,14 +342,13 @@ const PackageOverview = (props) => {
         )}
       </div>
       {/* ratings */}
-      <div className="mx-auto flex max-w-9xl  items-center space-x-4 relative">
+      <div className="mx-auto flex flex-col lg:flex-row max-w-8xl px-5 items-center space-x-4 relative">
         {user && (
           <div
-            className={`w-1/4 rounded-lg bg-gradient-to-br from-slate-100 via-slate-200 to-slate-100 h-[40vh] `}
+            className={`w-full lg:w-1/4 rounded-lg bg-gradient-to-br from-slate-100 via-slate-200 to-slate-100 h-[40vh]`}
           >
-            {" "}
             {rating == null && feedback == "" ? (
-              <h2 className="font-semibold text-3xl text-black/80 text-center  mt-4 ">
+              <h2 className="font-semibold text-3xl text-black/80 text-center mt-4">
                 Rate this Package
               </h2>
             ) : (
@@ -368,31 +378,46 @@ const PackageOverview = (props) => {
             />
           </div>
         )}
+
         {/* get and paste all reviews */}
         {!user && (
-          <div
-            className={`w-1/4 rounded-lg bg-gradient-to-br from-slate-100 via-slate-200 to-slate-100 h-[40vh] `}
-          >
-            <button
-              onClick={() => navigate("/login")}
-              type="button"
-              className="btn inline-block px-10 py-3 bg-gradient-to-b from-gray-800 via-gray-700 to-gray-600 shadow-gray-500/50 rounded-full text-white text-sm font-bold shadow-lg hover:shadow-xl hover:shadow-gray-500/30 hover:bg-gradient-to-r hover:from-gray-600 hover:via-gray-500 hover:to-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50"
+          <div className="relative w-full lg:w-1/4 rounded-lg min-h-[40vh] shadow-lg shadow-green/20 mb-4 lg:mb-0">
+            <div className="w-full h-full rounded-lg absolute blur-sm">
+              <h2 className="font-semibold text-3xl text-black/80 text-center mt-4">
+                Rate this Package
+              </h2>
+              <Rating
+                onSubmit={handleSubmit}
+                rating={rating}
+                feedback={feedback}
+                setRating={setRating}
+                setFeedback={setFeedback}
+              />
+            </div>
+            <div
+              className={`w-full absolute rounded-lg bg-gradient-to-br items-center flex justify-center from-slate-100/10 via-slate-200/10 to-slate-100/10 h-full`}
             >
-              Login to Review
-            </button>
+              <button
+                onClick={() => navigate("/login")}
+                type="button"
+                className="btn inline-block px-10 py-3 bg-gradient-to-b from-gray-800 via-gray-700 to-gray-600 shadow-green/50 rounded-full text-white text-sm font-bold shadow-lg hover:shadow-xl hover:shadow-gray-500/30 hover:bg-gradient-to-r hover:from-gray-600 hover:via-gray-500 hover:to-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50"
+              >
+                Login to Rate
+              </button>
+            </div>
           </div>
         )}
+
         <div
           className={`${
             user ? `w-3/4` : `w-full`
-          } font-semibold flex bg-slate-200 items-center  justify-center h-[40vh] rounded-lg`}
+          } font-semibold flex bg-slate-200 items-center justify-center h-[40vh] rounded-lg`}
         >
-          {" "}
-          <p className="text-5xl text-black/40">NO REVIEWS </p>
+          <p className="text-5xl text-black/40">NO REVIEWS</p>
         </div>
       </div>
       {/*********  iternary section*/}
-      <div classname="mx-auto max-w-5xl px-5 py-2 mt-5 ">
+      <div className="mx-auto max-w-8xl px-5 py-2 mt-5 ">
         <h4 className="text-3xl font-semibold mb-6">Itinerary</h4>
         <div className="space-y-4">
           {item.Days.map((day, index) => (
@@ -488,7 +513,7 @@ const PackageOverview = (props) => {
         </div>
       </div>
       {/* Terms and conditions */}
-      <div classname="mx-auto max-w-5xl px-5 py-2 mt-20">
+      <div className="mx-auto max-w-8xl px-5 py-2 mt-20">
         <h4 className="text-3xl font-semibold mb-6">Terms and Conditions</h4>
         <div className="space-y-4">
           <Terms />

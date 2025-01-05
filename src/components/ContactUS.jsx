@@ -1,27 +1,28 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
 import { AuthContext } from "../context/AuthProvider";
 import LoadingSpinner from "./LoadingSpinner";
+import Login from "./Login";
 
 const ContactUs = () => {
-  const { user } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(true);
+  const { user } = useContext(AuthContext); // Ensure you are using the correct context
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
   const axiosPublic = useAxiosPublic();
+
   const onSubmit = async (data) => {
-    console.log(data); // Check the data you're submitting
     const formData = {
       email: data.email,
       name: data.name,
       question: data.question,
       feedback: data.feedback,
     };
-    console.log(formData); // Ensure the formData structure is correct
+
     axiosPublic.post("/emails", formData).then((res) => {
-      console.log(res.data);
       if (res.data) {
         Swal.fire({
           position: "top-center",
@@ -37,10 +38,23 @@ const ContactUs = () => {
     });
   };
 
-  const isSetToken = localStorage.getItem("access-token") != null;
+  useEffect(() => {
+    if (!user) {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
 
+      return () => clearTimeout(timer);
+    }
+  }, [user]);
+
+  if (isLoading && !user) {
+    return <LoadingSpinner />;
+  }
+
+  // If user is not logged in, show Login component
   if (!user) {
-    if (isSetToken) return <LoadingSpinner />;
+    return <Login />;
   }
 
   return (
@@ -57,7 +71,7 @@ const ContactUs = () => {
           <input
             type="text"
             id="name"
-            value={isSetToken ? user.displayName : " "}
+            value={user?.displayName || ""}
             {...register("name", { required: true })}
             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           />
@@ -72,7 +86,7 @@ const ContactUs = () => {
           <input
             type="email"
             id="email"
-            value={isSetToken ? user.email : ""}
+            value={user?.email || ""}
             {...register("email", { required: true })}
             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           />
@@ -108,7 +122,7 @@ const ContactUs = () => {
         <div>
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700"
+            className="w-full bg-gradient-to-r from-violet-600 via-purple-600 to-pink-500 text-white py-2 px-4 rounded-md hover:bg-indigo-700"
           >
             Submit
           </button>
