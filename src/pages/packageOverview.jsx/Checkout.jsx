@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import { useForm } from "react-hook-form";
@@ -12,7 +12,6 @@ const Checkout = () => {
   } = useForm(); // Initialize useForm
   const location = useLocation();
   const { user } = useContext(AuthContext);
-  console.log(user);
 
   const axiosSecure = useAxiosSecure();
   const {
@@ -55,7 +54,6 @@ const Checkout = () => {
     });
 
     const order = await response.json();
-    console.log(order);
 
     // variable from razor pay
     var options = {
@@ -153,9 +151,7 @@ const Checkout = () => {
     e.preventDefault();
   };
 
-  //console.log(totalPrice);
-  //console.log(adultTravellers);
-  //console.log(location.state);
+  console.log(adultTravellers, childTravellers);
   return (
     <div className="container mx-auto px-4 py-8 mt-32">
       <h1 className="text-3xl font-bold mb-6 ml-5">Review Tour Details</h1>
@@ -223,104 +219,109 @@ const Checkout = () => {
           </h2>
 
           {/* Adult Travellers Table */}
-          <div className="overflow-x-auto mb-6">
-            <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
-                    Name
-                  </th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
-                    Age
-                  </th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
-                    Gender
-                  </th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
-                    Price
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {adultTravellers.map((traveller, index) => (
-                  <tr
-                    key={`adult-${index}`}
-                    className="border-t border-gray-200"
-                  >
-                    <td className="px-4 py-2 text-sm text-gray-800">
-                      {traveller.name}
-                    </td>
-                    <td className="px-4 py-2 text-sm text-gray-800">
-                      {traveller.age}
-                    </td>
-                    <td className="px-4 py-2 text-sm text-gray-800">
-                      {traveller.gender}
-                    </td>
-                    <td className="px-4 py-2 text-sm text-gray-800">
-                      ₹ {item.price}
-                    </td>
+          {adultTravellers.length > 0 && (
+            <div className="overflow-x-auto mb-6">
+              <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
+                      Name
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
+                      Age
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
+                      Gender
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
+                      Price
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
+                </thead>
+                <tbody>
+                  {adultTravellers.map((traveller, index) => (
+                    <tr
+                      key={`adult-${index}`}
+                      className="border-t border-gray-200"
+                    >
+                      <td className="px-4 py-2 text-sm text-gray-800">
+                        {traveller.name}
+                      </td>
+                      <td className="px-4 py-2 text-sm text-gray-800">
+                        {traveller.age}
+                      </td>
+                      <td className="px-4 py-2 text-sm text-gray-800">
+                        {traveller.gender}
+                      </td>
+                      <td className="px-4 py-2 text-sm text-gray-800">
+                        ₹ {item.price}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
           {/* Child Travellers Table */}
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
-                    Name
-                  </th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
-                    Age
-                  </th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
-                    Gender
-                  </th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
-                    Price
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {childTravellers.map((traveller, index) => (
-                  <tr
-                    key={`child-${index}`}
-                    className="border-t border-gray-200"
-                  >
-                    <td className="px-4 py-2 text-sm text-gray-800">
-                      {traveller.name}
-                    </td>
-                    <td className="px-4 py-2 text-sm text-gray-800">
-                      {traveller.age}
-                    </td>
-                    <td className="px-4 py-2 text-sm text-gray-800">
-                      {traveller.gender}
-                    </td>
-                    <td className="px-4 py-2 text-sm text-gray-800">
-                      ₹{item.price}
-                    </td>
+          {childTravellers.length > 0 && (
+            <div className="overflow-x-auto">
+              <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
+                      Name
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
+                      Age
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
+                      Gender
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-800">
+                      Price
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {childTravellers.map((traveller, index) => (
+                    <tr
+                      key={`child-${index}`}
+                      className="border-t border-gray-200"
+                    >
+                      <td className="px-4 py-2 text-sm text-gray-800">
+                        {traveller.name}
+                      </td>
+                      <td className="px-4 py-2 text-sm text-gray-800">
+                        {traveller.age}
+                      </td>
+                      <td className="px-4 py-2 text-sm text-gray-800">
+                        {traveller.gender}
+                      </td>
+                      <td className="px-4 py-2 text-sm text-gray-800">
+                        ₹{item.price}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
 
           <h2 className="text-xl text-center mt-3 font-semibold mb-2 text-gray-800">
             Total Price:
           </h2>
-          <h1 className="text-lg text-center  font-extrabold mb-6 text-gray-800">
+          <h1 className="text-3xl text-center  font-extrabold mb-6 text-gray-800">
             ₹{totalPrice}
           </h1>
 
-          <button
-            className="bg-blue-500 text-center hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full sm:w-auto"
-            onClick={paymentHandler}
-          >
-            Proceed to Pay
-          </button>
+          <div className="flex justify-center mt-6 lg:mt-8">
+            <button
+              className="btn justify-around inline-block px-10 py-3 bg-gradient-to-b from-gray-800 via-gray-700 to-gray-600 shadow-gray-500/50 rounded-full text-white text-sm font-bold shadow-lg hover:shadow-xl hover:shadow-gray-500/30 hover:bg-gradient-to-r hover:from-gray-600 hover:via-gray-500 hover:to-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50"
+              onClick={paymentHandler}
+            >
+              Proceed to Pay
+            </button>
+          </div>
         </div>
       </div>
     </div>

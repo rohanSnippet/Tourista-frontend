@@ -29,22 +29,16 @@ const AddTravellerInfo = () => {
   };
 
   const onSubmit = (data) => {
-    // Handle form submission
-    console.log(data);
-    setTravellers(data);
     const adultTravellers = data.adults;
     const childTravellers = data.children;
     const totalPrice = item.price * (adults + children);
-    console.log(adultTravellers);
-    console.log(childTravellers);
-    //console.log();
 
     navigate("/checkout", {
       state: {
-        adultTravellers: adultTravellers,
-        childTravellers: childTravellers,
-        item: item,
-        totalPrice: totalPrice,
+        adultTravellers,
+        childTravellers,
+        item,
+        totalPrice,
       },
     });
   };
@@ -55,9 +49,13 @@ const AddTravellerInfo = () => {
         <div className="section-container mt-10">
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Adult Traveller Details */}
-            <h2 className="text-2xl font-semibold mb-4 rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white pl-4 shadow-purple-500 shadow-md">
-              Adult Traveller Details
-            </h2>
+            {adults ? (
+              <h2 className="text-2xl font-semibold mb-4 py-2 rounded-sm bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white pl-4 shadow-purple-500 shadow-md">
+                Adult Traveller Details
+              </h2>
+            ) : (
+              <></>
+            )}
             {[...Array(adults)].map((_, index) => (
               <div
                 key={`adult-${index}`}
@@ -151,9 +149,13 @@ const AddTravellerInfo = () => {
             ))}
 
             {/* Children Traveller Details */}
-            <h2 className="text-2xl font-semibold mb-4 rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white pl-4 shadow-purple-500 shadow-md">
-              Children Traveller Details
-            </h2>
+            {children ? (
+              <h2 className="text-2xl font-semibold mb-4 py-2 rounded-sm bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white pl-4 shadow-purple-500 shadow-md">
+                Children Traveller Details
+              </h2>
+            ) : (
+              <></>
+            )}
             {[...Array(children)].map((_, index) => (
               <div
                 key={`child-${index}`}
@@ -243,12 +245,16 @@ const AddTravellerInfo = () => {
                 </div>
               </div>
             ))}
-            <button
-              type="submit" // Change button type to submit
-              className="btn justify-around  inline-block px-10 py-3 bg-gradient-to-b from-gray-800 via-gray-700 to-gray-600 shadow-gray-500/50 rounded-full text-white text-sm font-bold shadow-lg hover:shadow-xl hover:shadow-gray-500/30 hover:bg-gradient-to-r hover:from-gray-600 hover:via-gray-500 hover:to-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50"
-            >
-              Review Details
-            </button>
+
+            {/* Button Container */}
+            <div className="flex justify-center mt-6">
+              <button
+                type="submit"
+                className="btn justify-around  inline-block px-10 py-3 bg-gradient-to-b from-gray-800 via-gray-700 to-gray-600 shadow-gray-500/50 rounded-full text-white text-sm font-bold shadow-lg hover:shadow-xl hover:shadow-gray-500/30 hover:bg-gradient-to-r hover:from-gray-600 hover:via-gray-500 hover:to-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50 "
+              >
+                Review Details
+              </button>
+            </div>
           </form>
         </div>
       </div>

@@ -5,7 +5,7 @@ body {
 }
 
 header {
-  z-index: 1000 !important;
+  z-index: 1001 !important;
 }
 
 .subtitle {
@@ -20,7 +20,7 @@ header {
 
 .heartStar {
   border-radius: 0px 28px 0px 28px;
-  z-index: 1001;
+  z-index: 1000;
 }
 
 .active {
@@ -28,10 +28,6 @@ header {
   text-underline-offset: 5px;
   color: #39db4a;
 }
-
-/* .glow-effect {
-  transition: box-shadow 0.3s ease;
-} */
 
 .glow-effect:focus,
 .glow-effect:hover {
@@ -56,22 +52,6 @@ header {
 .logo-img {
   width: 180px; /* Adjust the width as needed */
   height: auto; /* Maintains aspect ratio */
-}
-
-/* Hide default radio button */
-/*.hidden {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-/* Custom styling for label */
-/* .custom-radio {
-  display: inline-block;
-  position: relative;
-  padding-left: 1.5rem;
-  cursor: pointer;
 }
 
 /* Custom radio indicator */
