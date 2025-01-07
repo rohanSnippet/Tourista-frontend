@@ -23,6 +23,7 @@ import ContactUS from "../components/ContactUS";
 import Terms from "../pages/packageOverview.jsx/Terms";
 import ManageBookings from "../pages/dashboard/admin/ManageBookings";
 import AboutUs from "../components/AboutUs";
+import CustomerSupport from "../pages/dashboard/admin/CustomerSupport";
 
 const router = createBrowserRouter([
   {
@@ -143,6 +144,10 @@ const router = createBrowserRouter([
       {
         path: "manage-bookings",
         element: <ManageBookings />,
+      },
+      {
+        path: "customer-support",
+        element: <CustomerSupport />,
       },
     ],
   },
