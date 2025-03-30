@@ -19,6 +19,7 @@ const Users = () => {
       return response.data;
     },
   });
+
   const Toast = Swal.mixin({
     toast: true,
     position: "top",

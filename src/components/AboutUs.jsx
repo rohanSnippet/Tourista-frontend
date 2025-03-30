@@ -86,11 +86,9 @@ const AboutUs = () => {
         <div className="bg-gray-100 rounded-xl p-8">
           <div className="max-w-4xl mx-auto">
             <div className="flex flex-wrap justify-center gap-8">
-              <div className="bg-white shadow-md rounded-lg p-6 w-80 border-gray-100 border-b-2 shadow-slate-400 hover:shadow-2xl hover:shadow-pink-400 hover:bg-purple-100">
+              <div className="bg-white shadow-md rounded-lg text-center p-6 w-80 border-gray-100 border-b-2 shadow-slate-400 hover:shadow-2xl hover:shadow-pink-400 hover:bg-purple-100">
                 <h2 className="text-2xl font-semibold mb-4">Rohan More</h2>
-                <p className="text-gray-700 mb-4">
-                  This project was developed by Rohan More.
-                </p>
+                <p className="text-gray-700 mb-4">Team Member</p>
                 <div className="flex justify-around mt-4">
                   <a
                     href="https://github.com/rohanSnippet"
@@ -110,12 +108,9 @@ const AboutUs = () => {
                   </a>
                 </div>
               </div>
-              <div className="bg-white border-gray-100 border-b-2 hover:shadow-2xl hover:shadow-yellow-500 hover:bg-amber-100 shadow-md shadow-slate-400 rounded-lg p-6 w-80">
+              <div className="bg-white border-gray-100 text-center border-b-2 hover:shadow-2xl hover:shadow-yellow-500 hover:bg-amber-100 shadow-md shadow-slate-400 rounded-lg p-6 w-80">
                 <h2 className="text-2xl font-semibold mb-4">Harsh Mahajan</h2>
-                <p className="text-gray-700 mb-4">
-                  The project requirements gathering, data collection, and
-                  documentation were overseen by Harsh Mahajan.
-                </p>
+                <p className="text-gray-700 mb-4">Team Member</p>
                 <div className="flex justify-around mt-4">
                   <a
                     href="https://github.com/harshmahajan"
@@ -126,7 +121,7 @@ const AboutUs = () => {
                     <FaGithubAlt />
                   </a>
                   <a
-                    href="https://www.linkedin.com/in/harsh-mahajan"
+                    href="https://www.linkedin.com/in/harsh-mahajan-637b30206/?originalSubdomain=in"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-slate-800 text-2xl shadow-lg shadow-gray-600 hover:-translate-y-2 duration-200 transition-all hover:shadow-gray-900 hover:shadow-xl"

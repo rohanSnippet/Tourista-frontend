@@ -43,7 +43,7 @@ const Profile = ({ user }) => {
         //handle error
       }); */
   };
-  console.log(user.photoURL);
+  //console.log(user.photoURL);
   return (
     <div>
       <div className="drawer drawer-end z-50">

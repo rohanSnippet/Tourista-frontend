@@ -23,6 +23,7 @@ import Rating from "./Rating";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { AuthContext } from "../../context/AuthProvider";
 import Swal from "sweetalert2";
+import { baseUrl } from "../../URL";
 
 const PackageOverview = () => {
   const location = useLocation();
@@ -40,7 +41,61 @@ const PackageOverview = () => {
   const [priceChildren, setPriceChildren] = useState(0);
   const [rating, setRating] = useState(null); // State for rating
   const [feedback, setFeedback] = useState(""); // State for feedback
+  const [isTourBooked, setIsTourBooked] = useState(false);
 
+  const token = localStorage.getItem("access-token");
+
+  useEffect(() => {
+    const checkBookingStatus = async () => {
+      try {
+        if (user) {
+          const response = await fetch(
+            `${baseUrl}/bookings/isBooked?email=${user.email}&tour_id=${item._id}`,
+            {
+              method: "GET",
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch booking status");
+          }
+
+          const data = await response.json();
+          setIsTourBooked(data.booked);
+        }
+      } catch (error) {
+        console.error("Error checking booking status:", error);
+      }
+    };
+
+    const fetchAdditionalData = async () => {
+      try {
+        const response = await fetch(`${baseUrl}/users/rating/${item._id}`, {
+          method: "GET",
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch additional data");
+        }
+
+        const data = await response.json();
+        console.log("Additional data:", data);
+      } catch (error) {
+        console.error("Error fetching additional data:", error);
+      }
+    };
+
+    checkBookingStatus();
+    fetchAdditionalData();
+  }, [user]);
+
+  // console.log(isTourBooked);
   const tour_id = item._id;
 
   const handleSubmit = async (data) => {
@@ -55,7 +110,7 @@ const PackageOverview = () => {
       console.log("Rating submitted successfully:", response.data);
       alert("Thank you for your feedback!");
     } catch (error) {
-      console.error("Error submitting rating:", error);
+      // console.error("Error submitting rating:", error);
       alert("Failed to submit your rating. Please try again.");
     }
   };
@@ -112,10 +167,10 @@ const PackageOverview = () => {
           setRating(null);
           setFeedback("");
         }
-        console.log("Rating fetched successfully:", response.data);
+        // console.log("Rating fetched successfully:", response.data);
       } catch (error) {
-        console.log(error);
-        if (error.response.data.message === "Rating not found.") {
+        //console.log(error);
+        if (error?.response?.data?.message === "Rating not found.") {
           setRating(null);
           setFeedback("");
         }
@@ -125,7 +180,6 @@ const PackageOverview = () => {
       getRatings();
     }
   }, []);
-
   //useEffect
   useEffect(() => {
     let timer;
@@ -343,7 +397,7 @@ const PackageOverview = () => {
       </div>
       {/* ratings */}
       <div className="mx-auto flex flex-col lg:flex-row max-w-8xl px-5 items-center space-x-4 relative">
-        {user && (
+        {user && isTourBooked && (
           <div
             className={`w-full lg:w-1/4 rounded-lg bg-gradient-to-br from-slate-100 via-slate-200 to-slate-100 h-[40vh]`}
           >
@@ -380,7 +434,7 @@ const PackageOverview = () => {
         )}
 
         {/* get and paste all reviews */}
-        {!user && (
+        {/* {!user && (
           <div className="relative w-full lg:w-1/4 rounded-lg min-h-[40vh] shadow-lg shadow-green/20 mb-4 lg:mb-0">
             <div className="w-full h-full rounded-lg absolute blur-sm">
               <h2 className="font-semibold text-3xl text-black/80 text-center mt-4">
@@ -407,10 +461,10 @@ const PackageOverview = () => {
             </div>
           </div>
         )}
-
+ */}
         <div
           className={`${
-            user ? `w-3/4` : `w-full`
+            isTourBooked ? `w-3/4` : `w-full`
           } font-semibold flex bg-slate-200 items-center justify-center h-[40vh] rounded-lg`}
         >
           <p className="text-5xl text-black/40">NO REVIEWS</p>
