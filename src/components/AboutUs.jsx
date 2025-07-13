@@ -82,8 +82,8 @@ const AboutUs = () => {
             </li>
           </ul>
         </section>
-
-        <div className="bg-gray-100 rounded-xl p-8">
+        {/* Temporaray Removal */}
+        {/*  <div className="bg-gray-100 rounded-xl p-8">
           <div className="max-w-4xl mx-auto">
             <div className="flex flex-wrap justify-center gap-8">
               <div className="bg-white shadow-md rounded-lg text-center p-6 w-80 border-gray-100 border-b-2 shadow-slate-400 hover:shadow-2xl hover:shadow-pink-400 hover:bg-purple-100">
@@ -132,7 +132,7 @@ const AboutUs = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
