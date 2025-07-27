@@ -73,12 +73,9 @@ const PackageOverview = () => {
 
     const fetchAdditionalData = async () => {
       try {
-        const response = await fetch(`${baseUrl}/users/rating/${item._id}`, {
-          method: "GET",
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axiosSecure.get(
+          `${baseUrl}/users/rating/${item._id}`
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch additional data");
